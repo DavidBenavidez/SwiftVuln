@@ -1,23 +1,26 @@
 from threading import Semaphore
 from functools import partial
-from server import scanFuncs
 import numpy as np
 import subprocess
 import time
 import re
 
 import xml.etree.ElementTree as ET
-
 from openvas_lib import VulnscanManager, VulnscanException
 
-# Create object for HOST, SUMMARY, CVS, (CVE) 
-class Quantify:
-    def __init__(self, targets, importance):
+from server import scanFuncs, scanDetailsFuncs # import database
+# from database.scan import scanFuncs
+
+class Quantifier:
+    def __init__(self, targets, importance, scan_name):
         self.targets = targets
         self.importance = importance
         self.target_details = {}
+        self.scan_name = scan_name
+        self._scan = scanFuncs()
+        self._scan_details = scanDetailsFuncs()
 
-    def my_print_status(self, i):
+    def status(self, i):
         print(str(i) + "%")
 
     def get_details(self, result, target):
@@ -39,6 +42,7 @@ class Quantify:
         summary = ""
 
         self.target_details[target] = []
+
         for line in result:
             match = re.search(host_delimeter, line)
             if match:
@@ -91,6 +95,7 @@ class Quantify:
                         new_dict['link'] = 'https://nvd.nist.gov/vuln/detail/%s' % match.groups()[2]
         
         self.target_details[target] = sorted(self.target_details[target], key=lambda k: k['score'], reverse=True)
+
         return(scores)
 
     def math_model_1(self, cvss_scores):
@@ -134,7 +139,7 @@ class Quantify:
 
         return(weighted_score)
 
-    def parse_result(self, scan_id, TARGET):
+    def parse_result(self, scan_id):
         print("Parsing results for scan id %s\n" % scan_id)
         
         # Get scan details
@@ -148,40 +153,43 @@ class Quantify:
 
         print("Report id: %s" % report_id)
 
+        # Store contents of result file in result.txt FOR TESTING PURPOSES ONLY REMOVE ON FINAL OUPUT
+        command = "omp --username david --password password -R  %s -f a3810a62-1f62-11e1-9219-406186ea4fc5 > %s.txt" % (report_id, (self.scan_name+self.scan_id))
+        result = str(subprocess.check_output(['bash', '-c', command]))
+
         command = "omp --username david --password password -R %s -f a3810a62-1f62-11e1-9219-406186ea4fc5" % report_id
         result = str(subprocess.check_output(['bash', '-c', command]))
         result = result.split("\n")
 
-        # Store contents of result.txt in an array
-        # result_file = open("SCAN-" + scan_id + ".txt", "r")
-        # result = result_file.read().splitlines()
 
         print("Results Parsed.\n")
         return(result)
 
     def scan(self, input_targets):
+        print("SCANNING TARGET NETWORK")
+
         # Merge targets into one string separated by comma
         targets = ""
         for i in range(0, len(input_targets)-1):
             targets += input_targets[i] + ", "
         targets += input_targets[len(input_targets)-1]
 
-        # sem = Semaphore(0)
-        # manager = VulnscanManager("localhost", "david", "password")
+        sem = Semaphore(0)
+        manager = VulnscanManager("localhost", "david", "password")
 
-        # scan_id, target_id = manager.launch_scan(targets,
-        #                     profile = "Full and fast",
-        #                     callback_end = partial(lambda x: x.release(), sem),
-        #                     callback_progress = my_print_status)
-        # # Wait
-        # sem.acquire()
+        scan_id, target_id = manager.launch_scan(targets,
+                            profile = "Full and fast",
+                            callback_end = partial(lambda x: x.release(), sem),
+                            callback_progress = self.status)
+        # Wait
+        sem.acquire()
 
-        # self.scan_id = scan_id
-        # result = parse_result(scan_id, targets)
+        self.scan_id = scan_id
+        result = self.parse_result(self.scan_id)
         
         # TEST CASE
-        self.scan_id = "df1296a7-bac5-49da-bda7-69ac74459bdd"
-        result = self.parse_result("df1296a7-bac5-49da-bda7-69ac74459bdd", targets)
+        # self.scan_id = "df1296a7-bac5-49da-bda7-69ac74459bdd"
+        # result = self.parse_result("df1296a7-bac5-49da-bda7-69ac74459bdd")
 
         return(result)
 
@@ -189,6 +197,12 @@ class Quantify:
         targets_weighted_scores = []
         # Scan targets and output result file 
         result = self.scan(self.targets)
+
+        # Add Scan to database
+        self._scan.addScan({
+            'scan_id': self.scan_id,
+            'scan_name': self.scan_name
+        })
         
         for target in self.targets:
             # Get all the top cve's found and their summary/information
@@ -198,52 +212,42 @@ class Quantify:
 
         # Apply 2nd Mathematical model for all tagets to output single scalar value
         self.quantified_score = self.math_model_2(targets_weighted_scores, self.importance)
-        
+        print("Quantified Security score for the network is: %f" % self.quantified_score)
 
 
+def testCase():
+    input_targets = ["192.168.100.12", "192.168.100.11", "127.0.0.1"]
+    importance = [0.4, 0.4, 0.4] #SCALING 0.4 0.8 1.2 1.6 2.0
 
-# input_targets.append(raw_input("Enter Target IP: "))
-# importance.append(raw_input("Enter Target Importance: "))
-input_targets = ["192.168.1.32", "192.168.1.33", "192.168.1.68"]
-importance = [0.4, 0.4, 0.4] #SCALING 0.4 0.8 1.2 1.6 2.0
+    quantifier = Quantifier(input_targets, importance, "scanSample@")
 
+    quantifier.quantify_targets()
 
-quantifier = Quantify(input_targets, importance)
+    for target in input_targets:
+        for detail in (quantifier.target_details[target]):
+            if 'link' in detail:
+                quantifier._scan_details.addScan({
+                    'scan_id': detail['scan_id'],
+                    'host': detail['host'],
+                    'nvt': detail['nvt'],
+                    'score': detail['score'],
+                    'summary': detail['summary'],
+                    'link': detail['link']
+                })
+            else:
+                quantifier._scan_details.addScan({
+                    'scan_id': detail['scan_id'],
+                    'host': detail['host'],
+                    'nvt': detail['nvt'],
+                    'score': detail['score'],
+                    'summary': detail['summary']
+                })
 
-quantifier.quantify_targets()
+    # quantifier._scan.getScans()
 
-scan = scanFuncs()
-# for target in input_targets:
-#     # print("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<%s>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" % target)
-#     # print("%s ISSUES" % len(quantifier.target_details[target]))
-#     for detail in (quantifier.target_details[target]):
-#         # print("==========================================================")
-#         # print("SCAN_ID: %s" % detail['scan_id'])
-#         # print("HOST: %s" % detail['host'])
-#         # print("NVT: %s" % detail['nvt'])
-#         # print("SCORE: %s" % detail['score'])
-#         # print("SUMMARY: %s" % detail['summary'])
-#         if 'link' in detail:
-#             scan.addScan({
-#                 'scan_id': detail['scan_id'],
-#                 'host': detail['host'],
-#                 'nvt': detail['nvt'],
-#                 'score': detail['score'],
-#                 'summary': detail['summary'],
-#                 'link': detail['link']
-#             })
-#         else:
-#             scan.addScan({
-#                 'scan_id': detail['scan_id'],
-#                 'host': detail['host'],
-#                 'nvt': detail['nvt'],
-#                 'score': detail['score'],
-#                 'summary': detail['summary']
-#             })
-            # print("LINK: %s" % detail['link'])
+    # quantifier._scan.deleteScan('df1296a7-bac5-49da-bda7-69ac74459bdd')
+    
+    # quantifier._scan_details.getScans()
+    # quantifier._scan.getScans()
 
-
-# scan.getScans()
-
-scan.getCount()
-print("Quantified Security score for the network is: %f" % quantifier.quantified_score)
+testCase()

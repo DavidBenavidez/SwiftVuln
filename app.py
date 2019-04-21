@@ -1,6 +1,7 @@
 import Tkinter as tk 
-
 from os import _exit
+
+import menu
 
 
 class MainApplication(tk.Tk):
@@ -8,6 +9,7 @@ class MainApplication(tk.Tk):
         tk.Tk.__init__(self)
         self.title('SwiftVuln')
         self._screen = None
+        self.changeScreen(menu.Main)
     
     def handleWindowClose(self):
         self.destroy()
