@@ -1,4 +1,4 @@
-import Tkinter as tk 
+import tkinter as tk 
 from os import _exit
 
 import menu
@@ -29,7 +29,8 @@ if __name__ == '__main__':
 
     width, height = app.winfo_screenwidth(), app.winfo_screenheight()
 
-    app.geometry('%dx%d+0+0' % (width,height))
+    app.geometry('1000x600')
+    # app.geometry('%dx%d+0+0' % (width,height))
     app.resizable(0, 0)
     
     app.mainloop()
