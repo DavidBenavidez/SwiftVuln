@@ -1,4 +1,4 @@
-from tkinter import font
+from Tkinter.Font import font
 
 def _getFont(fontClass):
   fonts = {

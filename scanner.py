@@ -161,18 +161,21 @@ class Quantifier:
         result = str(subprocess.check_output(['bash', '-c', command]))
         result = result.split("\n")
 
+        # Store contents of result.txt in an array
+        # result_file = open("SCAN-" + scan_id + ".txt", "r")
+        # result = result_file.read().splitlines()
+
 
         print("Results Parsed.\n")
         return(result)
 
     def scan(self, input_targets):
-        print("SCANNING TARGET NETWORK")
-
         # Merge targets into one string separated by comma
         targets = ""
         for i in range(0, len(input_targets)-1):
             targets += input_targets[i] + ", "
         targets += input_targets[len(input_targets)-1]
+        print("SCANNING TARGET NETWORK: %s" % targets)
 
         sem = Semaphore(0)
         manager = VulnscanManager("localhost", "david", "password")
@@ -216,10 +219,10 @@ class Quantifier:
 
 
 def testCase():
-    input_targets = ["192.168.100.12", "192.168.100.11", "127.0.0.1"]
-    importance = [0.4, 0.4, 0.4] #SCALING 0.4 0.8 1.2 1.6 2.0
+    input_targets = ["10.0.4.82", "10.0.5.141", "10.0.4.248", "10.0.4.237", "10.0.5.184"]
+    importance = [0.4, 0.4, 0.4, 0.4, 0.4] #SCALING 0.4 0.8 1.2 1.6 2.0
 
-    quantifier = Quantifier(input_targets, importance, "scanSample@")
+    quantifier = Quantifier(input_targets, importance, "WINDOWS8@")
 
     quantifier.quantify_targets()
 

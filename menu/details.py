@@ -1,7 +1,7 @@
-import tkinter as tk 
+import Tkinter as tk 
 
 from PIL import Image, ImageTk
-from utils import _getFont, colors
+from utils import colors
 from ui import create_rounded_rectangle
 
 import menu
