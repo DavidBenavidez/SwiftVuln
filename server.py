@@ -8,7 +8,8 @@ Base = declarative_base()
 class ScanDetails(Base):
     __tablename__ = 'scan_details'
     id = Column(Integer, primary_key=True, nullable=False)
-    scan_id = Column('scan_id', String, ForeignKey("scan.scan_id", ondelete="CASCADE"), nullable=False)
+    scan_id = Column('scan_id', String, nullable=False)
+    # scan_id = Column('scan_id', String, ForeignKey("scan.scan_id", ondelete="CASCADE"), nullable=False)
     host = Column('host', String, nullable=False)
     nvt = Column('nvt', String, nullable=False)
     cvss_score = Column('cvss_score', Float, nullable=False)
@@ -22,7 +23,7 @@ class Scan(Base):
     scan_id = Column('scan_id', String, primary_key=True, nullable=False)
     scan_name = Column('scan_name', String, nullable=False)
 
-    parent = relationship(ScanDetails, backref="parent", passive_deletes='all')
+    # parent = relationship(ScanDetails, backref="parent", passive_deletes='all')
 
 
 class scanFuncs:
@@ -63,12 +64,13 @@ class scanFuncs:
     def getScans(self):
         session = self.Session()
         scans = session.query(Scan).all()
-        for scan in scans:
-            print('====================')
-            print(scan.scan_id)
-            print(scan.scan_name)
-            print('====================')
+        # for scan in scans:
+        #     print('====================')
+        #     print(scan.scan_id)
+        #     print(scan.scan_name)
+        #     print('====================')
         session.close()
+        return(scans)
 
 class scanDetailsFuncs:
     def __init__(self):
@@ -101,13 +103,19 @@ class scanDetailsFuncs:
     def getScans(self):
         session = self.Session()
         scans = session.query(ScanDetails).all()
-
-        for scan in scans:
-            print('====================')
-            print(scan.scan_id)
-            print(scan.host)
-            print(scan.nvt)
-            print(scan.cvss_score)
-            print(scan.summary)
-            print('====================')
+        # for scan in scans:
+        #     print('====================')
+        #     print(scan.scan_id)
+        #     print(scan.host)
+        #     print(scan.nvt)
+        #     print(scan.cvss_score)
+        #     print(scan.summary)
+        #     print('====================')
         session.close()
+        return(scans)
+    
+    def getHostCount(self, host):
+        session = self.Session()
+        rows = session.query(func.count(ScanDetails.id)).filter(ScanDetails.host==host).scalar()
+        session.close()
+        return(rows)
