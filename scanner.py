@@ -5,6 +5,7 @@ import subprocess
 import time
 import re
 
+import datetime
 import xml.etree.ElementTree as ET
 from openvas_lib import VulnscanManager, VulnscanException
 
@@ -25,6 +26,7 @@ class Quantifier:
 
     def get_details(self, result, target):
         # Use regex to find the cvss scores in the file
+        date_pattern = '(Scan started:)\s(.*)'
         cvss_pattern = '(CVSS:)\s(\d.\d*)'
         cve_pattern = '(CVE:)\s(.*)?(CVE-\d\d\d\d-\d\d\d\d)'
         host_delimeter = '(Port Summary for Host)\s(%s)' % target
@@ -44,11 +46,26 @@ class Quantifier:
         self.target_details[target] = []
 
         for line in result:
+            # Get date
+            match = re.search(date_pattern, line)
+            if match:
+                match = match.groups()[1].split(" ") 
+                date_str = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']
+                self.date = (int(match[4]), date_str.index(match[1])+1, int(match[2]))
+                # Add Scan to database
+                self._scan.addScan({
+                    'scan_id': self.scan_id,
+                    'scan_name': self.scan_name,
+                    'scan_date': datetime.date(self.date[0], self.date[1], self.date[2])
+                })
+
+            # Get scores
             match = re.search(host_delimeter, line)
             if match:
                 start = True
                 continue
             
+            # Get nvts
             match = re.search(stop_delimeter, line)
             if match:
                 if(start == True):
@@ -66,19 +83,19 @@ class Quantifier:
                     
                 match = re.search(summary_start_pattern, line)
                 if match:
+                    if(bool(new_dict)):
+                        new_dict['host'] = target
+                        new_dict['scan_id'] = self.scan_id
+                        self.target_details[target].append(new_dict)
+                        new_dict={}
                     if(scores[len(scores)-1] >= 4.0):
                         summary_start = True
-                        if(bool(new_dict)):
-                            new_dict['host'] = target
-                            new_dict['scan_id'] = self.scan_id
-                            self.target_details[target].append(new_dict)
-                        new_dict = {}
                         continue
     
                 if summary_start:
                     match = re.search(summary_end_pattern, line)
                     if match:
-                        new_dict['nvt'] = nvt[len(scores)-1]
+                        new_dict['nvt'] = nvt[len(nvt)-1]
                         new_dict['score'] = scores[len(scores)-1]
                         new_dict['summary'] = summary
                         summary = ""
@@ -161,11 +178,6 @@ class Quantifier:
         result = str(subprocess.check_output(['bash', '-c', command]))
         result = result.split("\n")
 
-        # Store contents of result.txt in an array
-        # result_file = open("SCAN-" + scan_id + ".txt", "r")
-        # result = result_file.read().splitlines()
-
-
         print("Results Parsed.\n")
         return(result)
 
@@ -177,22 +189,22 @@ class Quantifier:
         targets += input_targets[len(input_targets)-1]
         print("SCANNING TARGET NETWORK: %s" % targets)
 
-        sem = Semaphore(0)
-        manager = VulnscanManager("localhost", "david", "password")
+        # sem = Semaphore(0)
+        # manager = VulnscanManager("localhost", "david", "password")
 
-        scan_id, target_id = manager.launch_scan(targets,
-                            profile = "Full and fast",
-                            callback_end = partial(lambda x: x.release(), sem),
-                            callback_progress = self.status)
-        # Wait
-        sem.acquire()
+        # scan_id, target_id = manager.launch_scan(targets,
+        #                     profile = "Full and fast",
+        #                     callback_end = partial(lambda x: x.release(), sem),
+        #                     callback_progress = self.status)
+        # # Wait
+        # sem.acquire()
 
-        self.scan_id = scan_id
-        result = self.parse_result(self.scan_id)
+        # self.scan_id = scan_id
+        # result = self.parse_result(self.scan_id)
         
-        # TEST CASE
-        # self.scan_id = "df1296a7-bac5-49da-bda7-69ac74459bdd"
-        # result = self.parse_result("df1296a7-bac5-49da-bda7-69ac74459bdd")
+        # TEST CASE REMOVE ON FINAL PROD
+        self.scan_id = "c5a5a05f-55fb-490d-ad53-d877cb1a2d90"
+        result = self.parse_result("c5a5a05f-55fb-490d-ad53-d877cb1a2d90")
 
         return(result)
 
@@ -200,12 +212,6 @@ class Quantifier:
         targets_weighted_scores = []
         # Scan targets and output result file 
         result = self.scan(self.targets)
-
-        # Add Scan to database
-        self._scan.addScan({
-            'scan_id': self.scan_id,
-            'scan_name': self.scan_name
-        })
         
         for target in self.targets:
             # Get all the top cve's found and their summary/information
@@ -217,12 +223,11 @@ class Quantifier:
         self.quantified_score = self.math_model_2(targets_weighted_scores, self.importance)
         print("Quantified Security score for the network is: %f" % self.quantified_score)
 
-
 def testCase():
-    input_targets = ["10.0.4.82", "10.0.5.141", "10.0.4.248", "10.0.4.237", "10.0.5.184"]
+    input_targets = ["10.0.5.141", "10.0.4.28", "10.0.4.248", "10.0.4.237", "10.0.5.184"]
     importance = [0.4, 0.4, 0.4, 0.4, 0.4] #SCALING 0.4 0.8 1.2 1.6 2.0
 
-    quantifier = Quantifier(input_targets, importance, "WINDOWS8@")
+    quantifier = Quantifier(input_targets, importance, "TestCaseUbuntu12")
 
     quantifier.quantify_targets()
 

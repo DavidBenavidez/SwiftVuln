@@ -10,6 +10,8 @@ import menu
 import sys
 sys.path.append("..")
 
+# Import server
+from server import scanFuncs, scanDetailsFuncs
 
 class Details(tk.Canvas):
     def __init__(self, root):
@@ -26,7 +28,34 @@ class Details(tk.Canvas):
         
         
     def _loadView(self):
-            create_rounded_rectangle(self, 175, 320, 825, 400, r=10, fill=colors.VIOLET, outline=colors.BLUE)
+            # Get data
+            scan_list_db = scanFuncs()
+            scan_list = scan_list_db.getScans()
+
+            # Initialize Listbox
+            scans_listbox = tk.Listbox(self, height=22, width=60, font=('Helvetica', 12, 'bold'), fg=colors.DGRAY, cursor="mouse")
+            scroll = tk.Scrollbar(self, command=scans_listbox.yview)
+
+            counter = 1
+            for scan in scan_list:
+                scans_listbox.insert(counter, "%d) %s (%s)" % (counter, scan.scan_name, scan.scan_id))
+                counter += 1
+
+            # Initialize listbox listener
+            def onselect(evt):
+                # Note here that Tkinter passes an event object to onselect()
+                w = evt.widget
+                index = int(w.curselection()[0])
+                value = w.get(index)
+                print('You selected item %d: "%s"' % (index, value))
+                # Get scan id
+                value = str(value).split(" ")[2]
+                scan_id = value.strip("()")
+                print(scan_id)
+
+            scans_listbox.bind('<<ListboxSelect>>', onselect)
+            scans_listbox.place(x=370, y=37)
+
             create_rounded_rectangle(self, 50, 30, 300, 575, r=10, fill=colors.WHITE, outline=colors.DGRAY)
             dash = tk.PhotoImage(file='assets/buttons/dash_on.png')
             scan = tk.PhotoImage(file='assets/buttons/scan_on.png')
