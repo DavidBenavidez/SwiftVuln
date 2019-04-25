@@ -1,5 +1,5 @@
 # Import tkinter packages
-import Tkinter as tk, tkFont
+import tkinter as tk
 from PIL import Image, ImageTk
 from utils import colors
 from ui import create_rounded_rectangle

@@ -1,5 +1,5 @@
 # Import tkinter packages
-import Tkinter as tk
+import tkinter as tk
 from PIL import Image, ImageTk
 from utils import colors
 from ui import create_rounded_rectangle
@@ -13,7 +13,6 @@ sys.path.append("..")
 class Scan(tk.Canvas):
     def __init__(self, root):
         tk.Canvas.__init__(self, root, width=700, height=600, bd=0, highlightthickness=0, bg=colors.DWHITE)
-        self.target_entry = tk.StringVar()
         self.root = root   
         self._loadView()
     
@@ -24,8 +23,6 @@ class Scan(tk.Canvas):
         self.root.changeScreen(menu.Details)
         
     def startScan(self, event=None):
-        target_entry = (str(self.target_entry.get()))
-        self.root.target_entry = target_entry
         self.root.changeScreen(menu.StartScan)
 
     def _loadView(self):
@@ -53,31 +50,15 @@ class Scan(tk.Canvas):
             
             self.create_image(145, 480, image=self.details_off, anchor=tk.W, tags="DETAILS_SWITCH", activeimage=self.details)
             self.create_text(172, 530, text='DETAILS', fill=colors.GRAY)
-
+            
             self.tag_bind('MAIN_SWITCH','<ButtonPress-1>', self.toggleMain)
             self.tag_bind('DETAILS_SWITCH','<ButtonPress-1>', self.toggleDetails)
             #########################################################
-            
-            # self.create_text(520, 165, font=("Lato", 15, "bold" ), text='TOP HOSTS', fill=colors.DGRAY)
 
+            start_scan = tk.PhotoImage(file='assets/buttons/start_scan.png')
+            start_scan_hover = tk.PhotoImage(file='assets/buttons/start_scan_hover.png')
+            self.start_scan = start_scan
+            self.start_scan_hover = start_scan_hover
+            self.create_image(880, 300, image=self.start_scan, anchor=tk.E, tags="START_SCAN", activeimage=self.start_scan_hover)
             
-            # inputField = tk.Entry(
-            #     self,
-            #     textvariable=self.target_entry,
-            #     bg=colors.DGRAY,
-            #     fg=colors.WHITE,
-            #     highlightcolor=colors.GRAY,
-            #     justify=tk.CENTER,
-            #     font='Lato'
-            # )
-            # fieldLabel = tk.Label(
-            #     self,
-            #     text='Enter target',
-            #     fg='Black',
-            #     bg=colors.DWHITE,
-            #     font='Lato'
-            # )
-            # fieldLabel.place(x=650, y=230, anchor='center')
-            # inputField.place(x=450, y=250, height=40, width=400)
-            # inputField.focus()
-            # inputField.bind('<Return>', self.startScan)
+            self.tag_bind('START_SCAN', '<ButtonPress-1>', self.startScan)

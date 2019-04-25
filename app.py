@@ -1,4 +1,4 @@
-import Tkinter as tk 
+import tkinter as tk 
 from os import _exit
 
 import menu

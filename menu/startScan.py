@@ -1,5 +1,5 @@
 # Import tkinter packages
-import Tkinter as tk
+import tkinter as tk
 from PIL import Image, ImageTk
 from utils import colors
 from ui import create_rounded_rectangle
@@ -16,33 +16,36 @@ class StartScan(tk.Canvas):
         self.root = root   
         self._loadView()
     
-    def toggleMain(self, event=None):
-        self.root.changeScreen(menu.Main)
+    def toggleSubnet(self, event=None):
+        self.root.scan_type = "Subnet"
+        self.root.changeScreen(menu.MainScan)
          
-    def toggleDetails(self, event=None):
-        self.root.changeScreen(menu.Details)
+    def toggleOne(self, event=None):
+        self.root.scan_type = "One"
+        self.root.changeScreen(menu.MainScan)
+    
+    def toggleBack(self, event=None):
+        self.root.changeScreen(menu.Scan)
         
     def _loadView(self):
-            # SIDE NAVBAR
-           #########################################################  
-            # self.create_text(520, 165, font=("Lato", 15, "bold" ), text='TOP HOSTS', fill=colors.DGRAY)
+            subnet_scan = tk.PhotoImage(file='assets/buttons/subnet_scan.png')
+            subnet_scan_hover = tk.PhotoImage(file='assets/buttons/subnet_scan_hover.png')
+            one = tk.PhotoImage(file='assets/buttons/one.png')
+            one_hover = tk.PhotoImage(file='assets/buttons/one_hover.png')
+            back = tk.PhotoImage(file='assets/buttons/back.png')
+            back_hover = tk.PhotoImage(file='assets/buttons/back_hover.png')
+            
+            self.subnet_scan = subnet_scan
+            self.subnet_scan_hover = subnet_scan_hover
+            self.one = one
+            self.one_hover = one_hover
+            self.back = back
+            self.back_hover = back_hover
 
-            inputField = tk.Entry(
-                self,
-                textvariable="lala",
-                bg=colors.DGRAY,
-                fg=colors.WHITE,
-                highlightcolor=colors.GRAY,
-                justify=tk.CENTER,
-                font='Lato'
-            )
-            fieldLabel = tk.Label(
-                self,
-                text='Enter target',
-                fg='Black',
-                bg=colors.DWHITE,
-                font='Lato'
-            )
-            fieldLabel.place(x=650, y=230, anchor='center')
-            inputField.place(x=450, y=250, height=40, width=400)
-            inputField.focus()
+            self.create_image(680, 370, image=self.subnet_scan, anchor=tk.E, tags="SUBNET_SCAN", activeimage=self.subnet_scan_hover)
+            self.create_image(680, 220, image=self.one, anchor=tk.E, tags="ONE_SCAN", activeimage=self.one_hover)
+            self.create_image(180, 100, image=self.back, anchor=tk.E, tags="BACK", activeimage=self.back_hover)
+            
+            self.tag_bind('SUBNET_SCAN', '<ButtonPress-1>', self.toggleSubnet)
+            self.tag_bind('ONE_SCAN', '<ButtonPress-1>', self.toggleOne)
+            self.tag_bind('BACK', '<ButtonPress-1>', self.toggleBack)

@@ -1,5 +1,5 @@
 # Import tkinter packages
-import Tkinter as tk
+import tkinter as tk
 from PIL import Image, ImageTk
 from utils import colors
 from ui import create_rounded_rectangle
@@ -7,7 +7,7 @@ from ui import create_rounded_rectangle
 # Import matplotlib packages
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
-from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2TkAgg
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from matplotlib.figure import Figure
 import matplotlib
 matplotlib.use("TkAgg")
