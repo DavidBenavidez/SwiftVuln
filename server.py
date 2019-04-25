@@ -155,9 +155,9 @@ class scanDetailsFuncs:
         session.close()
         return(rows)
 
-db = scanDetailsFuncs()
+# db = scanDetailsFuncs()
 
-scans = db.getScans()
+# scans = db.getScans()
 
-for scan in scans:
-    print(scan.cvss_score)
+# for scan in scans:
+#     print(scan.cvss_score)

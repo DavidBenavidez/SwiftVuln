@@ -55,7 +55,7 @@ class Main(tk.Canvas):
                 scans_list = db2.getScansByRange(str(date.today()),6)
             # Last 12 months
             elif setVar.get() == date_range[3]:
-                scans_list = db2.getScansByRange("2020-05-30",12)
+                scans_list = db2.getScansByRange(str(date.today()),12)
             
             if (not scans_list):
                 return [], []
@@ -187,7 +187,7 @@ class Main(tk.Canvas):
             labels, sizes = self.getNVTsData(setVar)
             # Print no data if no data was found
             if(len(labels) == 0):
-                self.create_text(800, 480, font=("Helvetica", 15), text='NO DATA', fill='red')
+                self.create_text(800, 480, font=("Lato", 15, "bold"), text='NO DATA', fill='red')
             else:
                 # Plot top nvts
                 colors_pie = ['gold', 'yellowgreen']
@@ -212,5 +212,5 @@ class Main(tk.Canvas):
                 canvas.draw()
                 canvas.get_tk_widget().pack(anchor='e', ipadx=50)
             # MATPLOT ===============================
-            self.create_text(520, 165, font=("Helvetica", 15), text='TOP HOSTS', fill=colors.DGRAY)
-            self.create_text(525, 480, font=("Helvetica", 15), text='TOP NVTS', fill=colors.DGRAY)
+            self.create_text(520, 165, font=("Lato", 15, "bold"), text='TOP HOSTS', fill=colors.DGRAY)
+            self.create_text(525, 480, font=("Lato", 15, "bold"), text='TOP NVTS', fill=colors.DGRAY)

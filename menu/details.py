@@ -1,5 +1,5 @@
 # Import tkinter packages
-import Tkinter as tk
+import Tkinter as tk, tkFont
 from PIL import Image, ImageTk
 from utils import colors
 from ui import create_rounded_rectangle
@@ -31,9 +31,7 @@ class Details(tk.Canvas):
             # Get data
             scan_list_db = scanFuncs()
             scan_list = scan_list_db.getScans()
-
-            # Initialize Listbox
-            scans_listbox = tk.Listbox(self, height=22, width=60, font=('Helvetica', 12, 'bold'), fg=colors.DGRAY, cursor="mouse")
+            scans_listbox = tk.Listbox(self, height=22, width=60, font=('Lato', 12), fg=colors.DGRAY, cursor="mouse")
             scroll = tk.Scrollbar(self, command=scans_listbox.yview)
 
             counter = 1
@@ -49,12 +47,66 @@ class Details(tk.Canvas):
                 value = w.get(index)
                 print('You selected item %d: "%s"' % (index, value))
                 # Get scan id
-                value = str(value).split(" ")[2]
-                scan_id = value.strip("()")
-                print(scan_id)
+                scan_id = str(value).split(" ")[2]
+                scan_id = scan_id.strip("()")
 
+                value = str(value).split(" ")
+                # Get data
+                details_db = scanDetailsFuncs()
+                scan_details = details_db.getScanDetails(scan_id)
+
+                # Instantiate new window
+                # self.config(state="disabled")
+                top=tk.Toplevel()
+                top.title(value[1])
+                top.geometry('600x600')
+                title = ("TOP NVTS FOR %s" % value[1])
+                canvas = tk.Canvas(top, bg=colors.DWHITE, width = 600, height = 600)
+                canvas.create_text(150, 30, font=("Lato", 15, 'bold'), text=title, fill=colors.DGRAY)
+
+                listbox = tk.Listbox(top, height=30, width=74, font=('Lato', 10), fg=colors.DGRAY)
+                scroll = tk.Scrollbar(top, command=listbox.xview)
+                counter = 1
+                if len(scan_details):
+                    for detail in scan_details:
+                        listbox.insert(counter, "NVT: ")
+                        counter += 1
+                        listbox.insert(counter, "%s" % (detail.nvt))
+                        counter += 1
+                        listbox.insert(counter, "HOST: ")
+                        counter += 1
+                        listbox.insert(counter, "%s" % (detail.host))
+                        counter += 1
+                        listbox.insert(counter, "CVSS SCORE: ")
+                        counter += 1
+                        listbox.insert(counter, "%s" % (detail.cvss_score))
+                        counter += 1
+                        listbox.insert(counter, "SUMMARY: ")
+                        counter += 1
+                        listbox.insert(counter, "%s" % (detail.summary))
+                        counter += 1
+                        # listbox.insert(counter, "\n\n")
+                        # counter += 1
+                else:
+                    listbox.insert(counter, "No major Vulnerabilities Found")
+
+                
+                listbox.place(x=2, y=50)
+                                
+                canvas.pack()
+
+                top.resizable(0,0)
+                top.mainloop()
+                
+
+
+
+            self.create_text(637, 65, font=("Lato", 15, "bold"), text='LIST OF SCANS', fill=colors.DGRAY)
+            self.create_text(635, 85, font=("Lato", 9), text='0) Scan_Name (Scan ID)', fill=colors.DGRAY)
+            # self.create_text(0, 0, font=("Lato", 15, "bold"), text='TOP NVTS', fill=colors.DGRAY)
+            # Initialize Listbox
             scans_listbox.bind('<<ListboxSelect>>', onselect)
-            scans_listbox.place(x=370, y=37)
+            scans_listbox.place(x=370, y=100)
 
             create_rounded_rectangle(self, 50, 30, 300, 575, r=10, fill=colors.WHITE, outline=colors.DGRAY)
             dash = tk.PhotoImage(file='assets/buttons/dash_on.png')

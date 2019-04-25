@@ -201,11 +201,10 @@ class Quantifier:
 
         self.scan_id = scan_id
         result = self.parse_result(self.scan_id)
-        
-        # TEST CASE REMOVE ON FINAL PROD
-        # self.scan_id = "eda1b242-8fc0-4a45-bfcb-8371b8220f82"
-        # result = self.parse_result(self.scan_id)
 
+        # TEST CASE REMOVE ON FINAL PROD
+        # self.scan_id = "0ab422dc-9604-4035-b44e-0d3e72bd1f17"
+        # result = self.parse_result(self.scan_id)
         return(result)
 
     def quantify_targets(self): 
@@ -226,10 +225,11 @@ class Quantifier:
 # def testCase():
 #     input_targets = ["10.0.4.82", "10.0.4.248", "10.0.4.237", "10.0.5.184"]
 #     importance = [0.4, 0.4, 0.4, 0.4] #SCALING 0.4 0.8 1.2 1.6 2.0
+    # input_targets = ["10.11.181.158"]
+    # importance = [0.4]
+    # quantifier = Quantifier(input_targets, importance, "TestCase@")
 
-#     quantifier = Quantifier(input_targets, importance, "Windows8@")
-
-#     quantifier.quantify_targets()
+    # quantifier.quantify_targets()
 
 #     for target in input_targets:
 #         for detail in (quantifier.target_details[target]):

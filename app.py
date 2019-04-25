@@ -9,7 +9,7 @@ class MainApplication(tk.Tk):
         tk.Tk.__init__(self)
         self.title('SwiftVuln')
         self._screen = None
-        self.changeScreen(menu.Main)
+        self.changeScreen(menu.Scan)
     
     def handleWindowClose(self):
         self.destroy()
