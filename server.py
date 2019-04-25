@@ -19,13 +19,13 @@ class Scan(Base):
     __tablename__ = 'scan'
     scan_id = Column('scan_id', String, primary_key=True, nullable=False)
     scan_name = Column('scan_name', String, nullable=False)
-    scan_date = Column('scan_date', Date)
+    scan_date = Column('scan_date', Date, nullable=False)
     # parent = relationship(ScanDetails, backref="parent", passive_deletes='all')
 
 
 class scanFuncs:
     def __init__(self):
-        self.engine = create_engine('sqlite:///swiftvuln2.db', echo=True)
+        self.engine = create_engine('sqlite:///swiftvuln.db', echo=True)
         Base.metadata.create_all(bind=self.engine)
         self.Session = sessionmaker(bind=self.engine)
     
@@ -110,7 +110,7 @@ class scanFuncs:
 
 class scanDetailsFuncs:
     def __init__(self):
-        self.engine = create_engine('sqlite:///swiftvuln2.db', echo=True)
+        self.engine = create_engine('sqlite:///swiftvuln.db', echo=True)
         Base.metadata.create_all(bind=self.engine)
         self.Session = sessionmaker(bind=self.engine)
 
@@ -140,12 +140,6 @@ class scanDetailsFuncs:
         session = self.Session()
         #scan_id, host, nvt, cvss_score, summary
         scans = session.query(ScanDetails).all()
-        # for scan in scans:
-        #     print('scan_id: ' + scan.scan_id)
-        #     print('host: ' + scan.host)
-        #     print('nvt: ' + scan.nvt)
-        #     print('cvss_score: %f' % scan.cvss_score)
-        #     print('summary: ' + scan.summary)
         session.close()
         return(scans)
 
@@ -161,22 +155,9 @@ class scanDetailsFuncs:
         session.close()
         return(rows)
 
-# db = scanFuncs()
-# db2 = scanDetailsFuncs()
+db = scanDetailsFuncs()
 
+scans = db.getScans()
 
-# db.addScan({
-#     'scan_id': 'id',
-#     'scan_name': 'name',
-#     'scan_date': datetime.date(2019, 8, 23)
-# })
-# db.deleteScan("c5a5a05f-55fb-490d-ad53-d877cb1a2d90")
-# scans = db.getScans()
-
-# db.getScansByRange("2019-05-30",1)
-# scans = db2.getScans()
-# print("AYSYUDGGUAD")
-# for scan in scans:
-#     scan = (str(scan.scan_date))
-#     scan = scan.split("-")
-#     print(scan)
+for scan in scans:
+    print(scan.cvss_score)

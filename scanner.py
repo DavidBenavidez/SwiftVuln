@@ -189,22 +189,22 @@ class Quantifier:
         targets += input_targets[len(input_targets)-1]
         print("SCANNING TARGET NETWORK: %s" % targets)
 
-        # sem = Semaphore(0)
-        # manager = VulnscanManager("localhost", "david", "password")
+        sem = Semaphore(0)
+        manager = VulnscanManager("localhost", "david", "password")
 
-        # scan_id, target_id = manager.launch_scan(targets,
-        #                     profile = "Full and fast",
-        #                     callback_end = partial(lambda x: x.release(), sem),
-        #                     callback_progress = self.status)
-        # # Wait
-        # sem.acquire()
+        scan_id, target_id = manager.launch_scan(targets,
+                            profile = "Full and fast",
+                            callback_end = partial(lambda x: x.release(), sem),
+                            callback_progress = self.status)
+        # Wait
+        sem.acquire()
 
-        # self.scan_id = scan_id
-        # result = self.parse_result(self.scan_id)
+        self.scan_id = scan_id
+        result = self.parse_result(self.scan_id)
         
         # TEST CASE REMOVE ON FINAL PROD
-        self.scan_id = "c5a5a05f-55fb-490d-ad53-d877cb1a2d90"
-        result = self.parse_result("c5a5a05f-55fb-490d-ad53-d877cb1a2d90")
+        # self.scan_id = "eda1b242-8fc0-4a45-bfcb-8371b8220f82"
+        # result = self.parse_result(self.scan_id)
 
         return(result)
 
@@ -223,39 +223,31 @@ class Quantifier:
         self.quantified_score = self.math_model_2(targets_weighted_scores, self.importance)
         print("Quantified Security score for the network is: %f" % self.quantified_score)
 
-def testCase():
-    input_targets = ["10.0.5.141", "10.0.4.28", "10.0.4.248", "10.0.4.237", "10.0.5.184"]
-    importance = [0.4, 0.4, 0.4, 0.4, 0.4] #SCALING 0.4 0.8 1.2 1.6 2.0
+# def testCase():
+#     input_targets = ["10.0.4.82", "10.0.4.248", "10.0.4.237", "10.0.5.184"]
+#     importance = [0.4, 0.4, 0.4, 0.4] #SCALING 0.4 0.8 1.2 1.6 2.0
 
-    quantifier = Quantifier(input_targets, importance, "TestCaseUbuntu12")
+#     quantifier = Quantifier(input_targets, importance, "Windows8@")
 
-    quantifier.quantify_targets()
+#     quantifier.quantify_targets()
 
-    for target in input_targets:
-        for detail in (quantifier.target_details[target]):
-            if 'link' in detail:
-                quantifier._scan_details.addScan({
-                    'scan_id': detail['scan_id'],
-                    'host': detail['host'],
-                    'nvt': detail['nvt'],
-                    'score': detail['score'],
-                    'summary': detail['summary'],
-                    'link': detail['link']
-                })
-            else:
-                quantifier._scan_details.addScan({
-                    'scan_id': detail['scan_id'],
-                    'host': detail['host'],
-                    'nvt': detail['nvt'],
-                    'score': detail['score'],
-                    'summary': detail['summary']
-                })
-
-    # quantifier._scan.getScans()
-
-    # quantifier._scan.deleteScan('df1296a7-bac5-49da-bda7-69ac74459bdd')
-    
-    # quantifier._scan_details.getScans()
-    # quantifier._scan.getScans()
-
-testCase()
+#     for target in input_targets:
+#         for detail in (quantifier.target_details[target]):
+#             if 'link' in detail:
+#                 quantifier._scan_details.addScan({
+#                     'scan_id': detail['scan_id'],
+#                     'host': detail['host'],
+#                     'nvt': detail['nvt'],
+#                     'score': detail['score'],
+#                     'summary': detail['summary'],
+#                     'link': detail['link']
+#                 })
+#             else:
+#                 quantifier._scan_details.addScan({
+#                     'scan_id': detail['scan_id'],
+#                     'host': detail['host'],
+#                     'nvt': detail['nvt'],
+#                     'score': detail['score'],
+#                     'summary': detail['summary']
+#                 })
+# testCase()
