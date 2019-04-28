@@ -25,7 +25,8 @@ class Scan(Base):
 
 class scanFuncs:
     def __init__(self):
-        self.engine = create_engine('sqlite:///swiftvuln.db', echo=True)
+        # self.engine = create_engine('sqlite:///swiftvuln.db', echo=True)
+        self.engine = create_engine('sqlite:///swiftvuln.db')
         Base.metadata.create_all(bind=self.engine)
         self.Session = sessionmaker(bind=self.engine)
     
@@ -110,7 +111,8 @@ class scanFuncs:
 
 class scanDetailsFuncs:
     def __init__(self):
-        self.engine = create_engine('sqlite:///swiftvuln.db', echo=True)
+        # self.engine = create_engine('sqlite:///swiftvuln.db', echo=True)
+        self.engine = create_engine('sqlite:///swiftvuln.db')
         Base.metadata.create_all(bind=self.engine)
         self.Session = sessionmaker(bind=self.engine)
 

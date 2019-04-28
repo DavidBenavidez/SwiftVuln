@@ -1,5 +1,3 @@
-from threading import Semaphore
-from functools import partial
 import numpy as np
 import subprocess
 import time
@@ -13,16 +11,14 @@ from server import scanFuncs, scanDetailsFuncs # import database
 # from database.scan import scanFuncs
 
 class Quantifier:
-    def __init__(self, targets, importance, scan_name):
+    def __init__(self, targets, importance, scan_name, scan_id):
         self.targets = targets
         self.importance = importance
-        self.target_details = {}
         self.scan_name = scan_name
+        self.scan_id = scan_id
+        self.target_details = {}
         self._scan = scanFuncs()
         self._scan_details = scanDetailsFuncs()
-
-    def status(self, i):
-        print(str(i) + "%")
 
     def get_details(self, result, target):
         # Use regex to find the cvss scores in the file
@@ -170,10 +166,6 @@ class Quantifier:
 
         print("Report id: %s" % report_id)
 
-        # Store contents of result file in result.txt FOR TESTING PURPOSES ONLY REMOVE ON FINAL OUPUT
-        command = "omp --username david --password password -R  %s -f a3810a62-1f62-11e1-9219-406186ea4fc5 > %s.txt" % (report_id, (self.scan_name+self.scan_id))
-        result = str(subprocess.check_output(['bash', '-c', command]))
-
         command = "omp --username david --password password -R %s -f a3810a62-1f62-11e1-9219-406186ea4fc5" % report_id
         result = str(subprocess.check_output(['bash', '-c', command]))
         result = result.split("\n")
@@ -181,36 +173,10 @@ class Quantifier:
         print("Results Parsed.\n")
         return(result)
 
-    def scan(self, input_targets):
-        # Merge targets into one string separated by comma
-        targets = ""
-        for i in range(0, len(input_targets)-1):
-            targets += input_targets[i] + ", "
-        targets += input_targets[len(input_targets)-1]
-        print("SCANNING TARGET NETWORK: %s" % targets)
-
-        sem = Semaphore(0)
-        manager = VulnscanManager("localhost", "david", "password")
-
-        scan_id, target_id = manager.launch_scan(targets,
-                            profile = "Full and fast",
-                            callback_end = partial(lambda x: x.release(), sem),
-                            callback_progress = self.status)
-        # Wait
-        sem.acquire()
-
-        self.scan_id = scan_id
-        result = self.parse_result(self.scan_id)
-
-        # TEST CASE REMOVE ON FINAL PROD
-        # self.scan_id = "0ab422dc-9604-4035-b44e-0d3e72bd1f17"
-        # result = self.parse_result(self.scan_id)
-        return(result)
-
     def quantify_targets(self): 
         targets_weighted_scores = []
-        # Scan targets and output result file 
-        result = self.scan(self.targets)
+
+        result = self.parse_result(self.scan_id)
         
         for target in self.targets:
             # Get all the top cve's found and their summary/information
@@ -221,33 +187,3 @@ class Quantifier:
         # Apply 2nd Mathematical model for all tagets to output single scalar value
         self.quantified_score = self.math_model_2(targets_weighted_scores, self.importance)
         print("Quantified Security score for the network is: %f" % self.quantified_score)
-
-# def testCase():
-#     input_targets = ["10.0.4.82", "10.0.4.248", "10.0.4.237", "10.0.5.184"]
-#     importance = [0.4, 0.4, 0.4, 0.4] #SCALING 0.4 0.8 1.2 1.6 2.0
-    # input_targets = ["10.11.181.158"]
-    # importance = [0.4]
-    # quantifier = Quantifier(input_targets, importance, "TestCase@")
-
-    # quantifier.quantify_targets()
-
-#     for target in input_targets:
-#         for detail in (quantifier.target_details[target]):
-#             if 'link' in detail:
-#                 quantifier._scan_details.addScan({
-#                     'scan_id': detail['scan_id'],
-#                     'host': detail['host'],
-#                     'nvt': detail['nvt'],
-#                     'score': detail['score'],
-#                     'summary': detail['summary'],
-#                     'link': detail['link']
-#                 })
-#             else:
-#                 quantifier._scan_details.addScan({
-#                     'scan_id': detail['scan_id'],
-#                     'host': detail['host'],
-#                     'nvt': detail['nvt'],
-#                     'score': detail['score'],
-#                     'summary': detail['summary']
-#                 })
-# testCase()

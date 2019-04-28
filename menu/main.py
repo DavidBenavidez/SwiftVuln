@@ -1,5 +1,5 @@
 # Import tkinter packages
-import tkinter as tk
+import Tkinter as tk
 from PIL import Image, ImageTk
 from utils import colors
 from ui import create_rounded_rectangle
@@ -105,7 +105,6 @@ class Main(tk.Canvas):
             elif setVar.get() == date_range[3]:
                 scans_list = db2.getScansByRange(str(date.today()),12)
 
-            
             if (not scans_list):
                 return [], []
             # Get cvss scores
@@ -117,11 +116,11 @@ class Main(tk.Canvas):
                         sizes[0] += 1
                     else:
                         sizes[1] += 1
-
             return labels, sizes
 
     def _loadView(self):
             create_rounded_rectangle(self, 50, 30, 300, 575, r=10, fill=colors.WHITE, outline=colors.DGRAY)
+            logo = tk.PhotoImage(file='assets/buttons/logo_blue.png')
             dash = tk.PhotoImage(file='assets/buttons/dash_on.png')
             scan = tk.PhotoImage(file='assets/buttons/scan_on.png')
             details = tk.PhotoImage(file='assets/buttons/details_on.png')
@@ -129,6 +128,7 @@ class Main(tk.Canvas):
             scan_off = tk.PhotoImage(file='assets/buttons/scan_off.png')
             details_off = tk.PhotoImage(file='assets/buttons/details_off.png')
             
+            self.logo = logo
             self.dash = dash
             self.scan = scan
             self.details = details
@@ -136,9 +136,11 @@ class Main(tk.Canvas):
             self.scan_off = scan_off
             self.details_off = details_off
             
+            
+            self.create_image(105, 62, image=self.logo, anchor=tk.W)
 
-            self.create_image(145, 120, image=self.dash, anchor=tk.W)
-            self.create_text(172, 170, text='DASHBOARD', fill=colors.DGRAY)
+            self.create_image(145, 140, image=self.dash, anchor=tk.W)
+            self.create_text(172, 190, text='DASHBOARD', fill=colors.DGRAY)
             
             self.create_image(145, 300, image=self.scan_off, anchor=tk.W, tags="SCAN_SWITCH", activeimage=self.scan)
             self.create_text(172, 350, text='SCAN', fill=colors.GRAY)
@@ -152,6 +154,8 @@ class Main(tk.Canvas):
             # input Range MatPlot
             setVar = tk.StringVar(self)
             setVar.set("This Month")
+
+            # Create Dropdown Menu
             optionList = ["This Month", "Last 3 Months", "Last 6 Months", "Last Year"]
             dropMenu = tk.OptionMenu(self, setVar, *optionList)
             dropMenu.place(x=350,y=50)
@@ -161,10 +165,10 @@ class Main(tk.Canvas):
             labels, sizes = self.getHostsData(setVar)
             # Print no data if no data was found
             if(len(labels) == 0):
-                self.create_text(800, 165, font=("Helvetica", 15), text='NO DATA', fill='red')
+                self.create_text(800, 165, font=("Lato", 15), text='NO DATA', fill='red')
             else:
                 # Plot Top hosts
-                colors_pie = ['gold', 'yellowgreen', 'lightcoral', 'lightskyblue']
+                colors_pie = [colors.VBLUE, colors.LBLUE, colors.PINK, colors.VIOLET]
                 explode = [0.1, 0, 0, 0]
                 colos_pie= colors_pie[:len(labels)]
                 explode= explode[:len(labels)]
@@ -177,6 +181,10 @@ class Main(tk.Canvas):
                 def animate2(i):
                     labels, sizes = self.getHostsData(setVar)
                     fsub2.clear()
+                    colors_pie = [colors.VBLUE, colors.LBLUE, colors.PINK, colors.VIOLET]
+                    explode = [0.1, 0, 0, 0]
+                    colos_pie= colors_pie[:len(labels)]
+                    explode= explode[:len(labels)]
                     fsub2.pie(sizes, labels=labels, colors=colors_pie, autopct='%1.1f%%', shadow=True, startangle=140)
                 ani2 = animation.FuncAnimation(f2, animate2)
 
@@ -190,7 +198,7 @@ class Main(tk.Canvas):
                 self.create_text(800, 480, font=("Lato", 15, "bold"), text='NO DATA', fill='red')
             else:
                 # Plot top nvts
-                colors_pie = ['gold', 'yellowgreen']
+                colors_pie = [colors.VBLUE, colors.LBLUE]
                 explode = [0.1, 0]
                 colors_pie = colors_pie[:len(labels)]
                 explode = explode[:len(labels)]
@@ -212,5 +220,5 @@ class Main(tk.Canvas):
                 canvas.draw()
                 canvas.get_tk_widget().pack(anchor='e', ipadx=50)
             # MATPLOT ===============================
-            self.create_text(520, 165, font=("Lato", 15, "bold"), text='TOP HOSTS', fill=colors.DGRAY)
-            self.create_text(525, 480, font=("Lato", 15, "bold"), text='TOP NVTS', fill=colors.DGRAY)
+            self.create_text(520, 165, font=("Lato", 15, "bold"), text='TOP HOSTS', fill=colors.VBLUE)
+            self.create_text(525, 480, font=("Lato", 15, "bold"), text='TOP NVTS', fill=colors.VBLUE)

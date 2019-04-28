@@ -1,5 +1,5 @@
 # Import tkinter packages
-import tkinter as tk
+import Tkinter as tk
 from PIL import Image, ImageTk
 from utils import colors
 from ui import create_rounded_rectangle
@@ -23,11 +23,12 @@ class Scan(tk.Canvas):
         self.root.changeScreen(menu.Details)
         
     def startScan(self, event=None):
-        self.root.changeScreen(menu.StartScan)
+        self.root.changeScreen(menu.InitScan)
 
     def _loadView(self):
-            # SIDE NAVBAR
+            # CREATE NAVBAR
             create_rounded_rectangle(self, 50, 30, 300, 575, r=10, fill=colors.WHITE, outline=colors.DGRAY)
+            logo = tk.PhotoImage(file='assets/buttons/logo_blue.png')
             dash = tk.PhotoImage(file='assets/buttons/dash_on.png')
             scan = tk.PhotoImage(file='assets/buttons/scan_on.png')
             details = tk.PhotoImage(file='assets/buttons/details_on.png')
@@ -35,6 +36,7 @@ class Scan(tk.Canvas):
             scan_off = tk.PhotoImage(file='assets/buttons/scan_off.png')
             details_off = tk.PhotoImage(file='assets/buttons/details_off.png')
 
+            self.logo = logo
             self.dash = dash
             self.scan = scan
             self.details = details
@@ -42,8 +44,10 @@ class Scan(tk.Canvas):
             self.scan_off = scan_off
             self.details_off = details_off
 
-            self.create_image(145, 120, image=self.dash_off, anchor=tk.W, tags="MAIN_SWITCH", activeimage=self.dash)
-            self.create_text(172, 170, text='DASHBOARD', fill=colors.GRAY)
+            self.create_image(105, 62, image=self.logo, anchor=tk.W)
+
+            self.create_image(145, 140, image=self.dash_off, anchor=tk.W, tags="MAIN_SWITCH", activeimage=self.dash)
+            self.create_text(172, 190, text='DASHBOARD', fill=colors.GRAY)
             
             self.create_image(145, 300, image=self.scan, anchor=tk.W)
             self.create_text(172, 350, text='SCAN', fill=colors.DGRAY)
