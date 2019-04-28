@@ -46,14 +46,14 @@ class Scan(tk.Canvas):
 
             self.create_image(105, 62, image=self.logo, anchor=tk.W)
 
-            self.create_image(145, 140, image=self.dash_off, anchor=tk.W, tags="MAIN_SWITCH", activeimage=self.dash)
-            self.create_text(172, 190, text='DASHBOARD', fill=colors.GRAY)
+            self.create_image(145, 150, image=self.dash_off, anchor=tk.W, tags="MAIN_SWITCH", activeimage=self.dash)
+            self.create_text(172, 200, text='DASHBOARD', fill=colors.GRAY)
             
-            self.create_image(145, 300, image=self.scan, anchor=tk.W)
+            self.create_image(145, 310, image=self.scan, anchor=tk.W)
             self.create_text(172, 350, text='SCAN', fill=colors.DGRAY)
             
-            self.create_image(145, 480, image=self.details_off, anchor=tk.W, tags="DETAILS_SWITCH", activeimage=self.details)
-            self.create_text(172, 530, text='DETAILS', fill=colors.GRAY)
+            self.create_image(145, 470, image=self.details_off, anchor=tk.W, tags="DETAILS_SWITCH", activeimage=self.details)
+            self.create_text(172, 520, text='DETAILS', fill=colors.GRAY)
             
             self.tag_bind('MAIN_SWITCH','<ButtonPress-1>', self.toggleMain)
             self.tag_bind('DETAILS_SWITCH','<ButtonPress-1>', self.toggleDetails)

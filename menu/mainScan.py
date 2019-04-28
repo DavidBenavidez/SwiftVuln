@@ -62,13 +62,13 @@ class MainScan(tk.Canvas):
 
     def _startScan(self):
         input_name = self.root.input_name
-        input_targets = self.root.input_target
         input_importance = map(float, self.root.input_importance)
+        input_targets = self.root.input_target
 
         scan_id = self.scan(input_targets)
-
+       
         quantifier = Quantifier(input_targets, input_importance, input_name, scan_id)
-        # quantifier = Quantifier(["10.0.4.139","10.0.5.141","10.0.4.248"], [0.4,0.4,0.4], "TESTCASE", "f3961a41-83a0-4d27-a517-b9702ae21d51")
+        
         quantifier.quantify_targets()
 
         for target in input_targets:
@@ -90,7 +90,6 @@ class MainScan(tk.Canvas):
                         'score': detail['score'],
                         'summary': detail['summary']
                     })
-
 
         ########## RENDER AFTER NETWORK SCAN
         crit = tk.PhotoImage(file='assets/scan/crit_severity.png')
@@ -161,4 +160,3 @@ class MainScan(tk.Canvas):
                 
         sem.release()
         time.sleep(0.25)
-

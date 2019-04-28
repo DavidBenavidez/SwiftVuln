@@ -128,12 +128,15 @@ class ConfigScan(tk.Canvas):
         logo = tk.PhotoImage(file='assets/buttons/logo_blue.png')
         back = tk.PhotoImage(file='assets/buttons/back.png')
         back_hover = tk.PhotoImage(file='assets/buttons/back_hover.png')
-        submit_img = tk.PhotoImage(file='assets/buttons/logo_blue.png')
+        submit_img = tk.PhotoImage(file='assets/scan/submit.png')
+        check_subnet_img = tk.PhotoImage(file='assets/scan/check_subnet.png')
 
         self.logo = logo
         self.back = back
         self.submit_img = submit_img
         self.back_hover = back_hover
+        self.submit_img = submit_img
+        self.check_subnet_img = check_subnet_img
 
         self.create_image(900, 100, image=self.logo, anchor=tk.E)
         self.create_image(180, 100, image=self.back, anchor=tk.E, tags="BACK", activeimage=self.back_hover)
@@ -169,10 +172,17 @@ class ConfigScan(tk.Canvas):
             )
             fieldLabel = tk.Label(
                 self,
-                text='Enter Comma-Seprated Hosts:',
+                text='Enter Comma-Separated Hosts:',
                 fg='Black',
                 bg=colors.DWHITE,
                 font='Lato'
+            )
+            hostExampleLabel = tk.Label(
+                self,
+                text='e.g (10.0.5.28, 10.0.5.4, 10.0.4.141)',
+                fg='Black',
+                bg=colors.DWHITE,
+                font=('Lato', 9)
             )
             importanceField = tk.Entry(
                 self,
@@ -185,7 +195,7 @@ class ConfigScan(tk.Canvas):
             )
             importanceLabel = tk.Label(
                 self,
-                text='Enter Comma-Seprated Importance:',
+                text='Enter Comma-Separated Importance:',
                 fg='Black',
                 bg=colors.DWHITE,
                 font='Lato'
@@ -199,7 +209,7 @@ class ConfigScan(tk.Canvas):
             )
             exampleLabel2 = tk.Label(
                 self,
-                text='e.g: 0.4, 0.4, 1.0',
+                text='e.g: (0.4, 0.4, 1.0)',
                 fg='Black',
                 bg=colors.DWHITE,
                 font=('Lato', 9)
@@ -208,19 +218,20 @@ class ConfigScan(tk.Canvas):
             nameLabel.place(x=530, y=170, anchor='center')
             nameField.place(x=330, y=190, height=40, width=400)
             
-            fieldLabel.place(x=530, y=270, anchor='center')
-            inputField.place(x=330, y=290, height=40, width=400)
+            fieldLabel.place(x=530, y=260, anchor='center')
+            inputField.place(x=330, y=280, height=40, width=400)
+            hostExampleLabel.place(x=330, y=320, height=40, width=400)
 
-            importanceLabel.place(x=530, y=370, anchor='center')
-            importanceField.place(x=330, y=390, height=40, width=400)
-            exampleLabel.place(x=330, y=425, height=40, width=400)
-            exampleLabel2.place(x=330, y=455, width=400)
+            importanceLabel.place(x=530, y=380, anchor='center')
+            importanceField.place(x=330, y=400, height=40, width=400)
+            exampleLabel.place(x=330, y=435, height=40, width=400)
+            exampleLabel2.place(x=330, y=465, width=400)
             
             submit = tk.Button(self, text="Start Scan", command=self.checkInputsOne)
             submit.config(image=self.submit_img)
-            submit.place(x=450, y=500)
+            submit.place(x=443, y=510)
 
-            self.err = self.create_text(525, 560, font=("Lato", 12, "bold"), text='Number of hosts and importance are not the same.', fill=colors.DWHITE)
+            self.err = self.create_text(543, 560, font=("Lato", 12, "bold"), text='Number of hosts and importance are not the same.', fill=colors.DWHITE)
         else:
             nameField = tk.Entry(
                 self,
@@ -276,8 +287,8 @@ class ConfigScan(tk.Canvas):
             inputField.focus()
 
             # Button to check subnet
-            check_subnet = tk.Button(self, text="Input Subnet", command=self._getSubnets, height=1, width=10)
-            # check_subnet.config(image=self.submit_img)
+            check_subnet = tk.Button(self, text="Input Subnet", command=self._getSubnets)
+            check_subnet.config(image=self.check_subnet_img)
             check_subnet.place(x=760, y=255)
 
             self.listbox_hosts.place(x = 360, y = 350)
@@ -287,8 +298,8 @@ class ConfigScan(tk.Canvas):
             self.listbox_imp.focus()
 
             # Edit this to go to mainScan and pass the proper variables
-            submit = tk.Button(self, text="Start Scan", width=15, command=self.checkInputsSubnet)
-            # submit.config(image=self.submit_img)
+            submit = tk.Button(self, text="Start Scan", command=self.checkInputsSubnet)
+            submit.config(image=self.submit_img)
             submit.place(x=450, y=500)
 
-            self.err = self.create_text(525, 560, font=("Lato", 12, "bold"), text='Number of hosts and importance are not the same.', fill=colors.DWHITE)
+            self.err = self.create_text(543, 560, font=("Lato", 12, "bold"), text='Number of hosts and importance are not the same.', fill=colors.DWHITE)

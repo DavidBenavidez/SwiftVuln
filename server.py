@@ -8,7 +8,7 @@ Base = declarative_base()
 class ScanDetails(Base):
     __tablename__ = 'scan_details'
     id = Column(Integer, primary_key=True, nullable=False)
-    scan_id = Column('scan_id', String, ForeignKey("scan.scan_id", ondelete="CASCADE"), nullable=False)
+    scan_id = Column('scan_id', String, nullable=False)
     host = Column('host', String, nullable=False)
     nvt = Column('nvt', String, nullable=False)
     cvss_score = Column('cvss_score', Float, nullable=False)
@@ -20,7 +20,7 @@ class Scan(Base):
     scan_id = Column('scan_id', String, primary_key=True, nullable=False)
     scan_name = Column('scan_name', String, nullable=False)
     scan_date = Column('scan_date', Date, nullable=False)
-    # parent = relationship(ScanDetails, backref="parent", passive_deletes='all')
+    scan_score = Column('scan_score', Float, nullable=False)
 
 
 class scanFuncs:
@@ -37,11 +37,24 @@ class scanFuncs:
         new_scan.scan_id = scan['scan_id']
         new_scan.scan_name = scan['scan_name']
         new_scan.scan_date = scan['scan_date']
+        new_scan.scan_score = scan['scan_score']
 
         session.merge(new_scan)
         session.commit()
         
         session.close()
+
+    def getScanScore(self, scan_id):
+        session = self.Session()
+        try:
+            scan = session.query(Scan).filter(Scan.scan_id==scan_id).one()
+        except:
+            session.close()
+            return(None)
+
+        session.close()
+        return(float(scan.scan_score))
+    
     
     def getScansByRange(self, cur_date, date_range):
         session = self.Session()
@@ -136,6 +149,17 @@ class scanDetailsFuncs:
         session.add(new_scan)
         session.commit()
         
+        session.close()
+
+    def deleteScan(self, scan_id):
+        session = self.Session()
+        
+        toDelete = session.query(ScanDetails).filter(ScanDetails.scan_id==scan_id)
+
+        for item in toDelete:
+            session.delete(item)
+
+        session.commit()
         session.close()
 
     def getScans(self):

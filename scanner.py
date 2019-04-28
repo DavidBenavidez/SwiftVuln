@@ -49,12 +49,6 @@ class Quantifier:
                 date_str = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']
                 self.date = (int(match[4]), date_str.index(match[1])+1, int(match[2]))
                 # Add Scan to database
-                self._scan.addScan({
-                    'scan_id': self.scan_id,
-                    'scan_name': self.scan_name,
-                    'scan_date': datetime.date(self.date[0], self.date[1], self.date[2])
-                })
-
             # Get scores
             match = re.search(host_delimeter, line)
             if match:
@@ -185,5 +179,12 @@ class Quantifier:
             targets_weighted_scores.append(self.math_model_1(target_scores))
 
         # Apply 2nd Mathematical model for all tagets to output single scalar value
-        self.quantified_score = self.math_model_2(targets_weighted_scores, self.importance)
+        self.quantified_score = round(self.math_model_2(targets_weighted_scores, self.importance), 2)
+        # Add scan to database
+        self._scan.addScan({
+            'scan_id': self.scan_id,
+            'scan_name': self.scan_name,
+            'scan_date': datetime.date(self.date[0], self.date[1], self.date[2]),
+            'scan_score': self.quantified_score
+        })
         print("Quantified Security score for the network is: %f" % self.quantified_score)
