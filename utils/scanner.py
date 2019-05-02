@@ -8,7 +8,6 @@ import xml.etree.ElementTree as ET
 from openvas_lib import VulnscanManager, VulnscanException
 
 from server import scanFuncs, scanDetailsFuncs # import database
-# from database.scan import scanFuncs
 
 class Quantifier:
     def __init__(self, targets, importance, scan_name, scan_id):
@@ -78,7 +77,7 @@ class Quantifier:
                         new_dict['scan_id'] = self.scan_id
                         self.target_details[target].append(new_dict)
                         new_dict={}
-                    if(scores[len(scores)-1] >= 4.0):
+                    if(scores[len(scores)-1] >= 2.0):
                         summary_start = True
                         continue
     
@@ -98,7 +97,7 @@ class Quantifier:
 
                 match = re.search(cve_pattern, line)
                 if match:
-                    if(scores[len(scores)-1] >= 4.0):
+                    if(scores[len(scores)-1] >= 2.0):
                         new_dict['link'] = 'https://nvd.nist.gov/vuln/detail/%s' % match.groups()[2]
         
         self.target_details[target] = sorted(self.target_details[target], key=lambda k: k['score'], reverse=True)

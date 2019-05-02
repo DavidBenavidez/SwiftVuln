@@ -1,1 +1,2 @@
-from utils.colors import colors
+from utils.scanner import Quantifier
+from utils.server import scanFuncs, scanDetailsFuncs

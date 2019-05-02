@@ -1,8 +1,7 @@
 # Import tkinter packages
 import Tkinter as tk
 from PIL import Image, ImageTk
-from utils import colors
-from ui import create_rounded_rectangle
+from ui import create_rounded_rectangle, colors
 
 
 # Import system Packages

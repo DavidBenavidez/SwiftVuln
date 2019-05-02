@@ -1,8 +1,7 @@
 # Import tkinter packages
 import Tkinter as tk
 from PIL import Image, ImageTk
-from utils import colors
-from ui import create_rounded_rectangle
+from ui import create_rounded_rectangle, colors
 
 # Import matplotlib packages
 import matplotlib.pyplot as plt
@@ -19,7 +18,7 @@ sys.path.append("..")
 
 import pages
 
-from server import scanDetailsFuncs, scanFuncs
+from utils.server import scanDetailsFuncs, scanFuncs
 from datetime import date
 
 class Main(tk.Canvas):

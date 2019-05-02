@@ -1,7 +1,7 @@
 # Import tkinter packages
 import Tkinter as tk
 from PIL import Image, ImageTk
-from utils import colors
+from ui import colors
 
 # Import system Packages
 from threading import Semaphore, Thread
@@ -68,5 +68,3 @@ class CheckSetup(tk.Canvas):
             self.no.place(x=530, y=555)
         else:
             self.loader = self.create_text(515, 560, font=("Lato", 12, "bold"), text='OpenVAS not detected. Please install OpenVAS.', fill="red")
-
-    

@@ -1,9 +1,7 @@
 # Import tkinter packages
 import Tkinter as tk
 from PIL import Image, ImageTk
-from utils import colors
-from ui import create_rounded_rectangle
-
+from ui import create_rounded_rectangle, colors
 
 # Import system Packages
 import pages
@@ -11,7 +9,7 @@ import sys
 sys.path.append("..")
 
 # Import server
-from server import scanFuncs, scanDetailsFuncs
+from utils.server import scanFuncs, scanDetailsFuncs
 
 class Details(tk.Canvas):
     def __init__(self, root):
@@ -98,7 +96,6 @@ class Details(tk.Canvas):
             scan_details = self.details_db.getScanDetails(scan_id)
 
             # Instantiate new window
-            # self.config(state="disabled")
             top=tk.Toplevel()
             value = value[1:]
             title = str(' '.join(value[:(len(value)-1)]))
@@ -162,8 +159,8 @@ class Details(tk.Canvas):
             else: 
                 scan_score = str(scan_score)
                 color = "#00FF82"
-            canvas.create_text(140, 570, anchor="w", font=("Lato", 15, "bold"), text= scan_score, fill=color)
-            canvas.create_text(70, 570, font=("Lato", 15, "bold"), text= "CVSS SCORE: ", fill=colors.DGRAY)
+            canvas.create_text(310, 570, anchor="w", font=("Lato", 15, "bold"), text= scan_score, fill=color)
+            canvas.create_text(160, 570, font=("Lato", 15, "bold"), text= "NETWORK SECURITY SCORE: ", fill=colors.DGRAY)
             
              # Delete Button
             delete_btn = tk.Button(top, font=("Lato", 10, "bold"), fg=colors.WHITE, bg="red", text="DELETE SCAN", command=deleteScan, height=1, width=10)

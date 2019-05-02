@@ -1,8 +1,7 @@
 # Import tkinter packages
 import Tkinter as tk
 from PIL import Image, ImageTk
-from utils import colors
-from ui import create_rounded_rectangle
+from ui import create_rounded_rectangle, colors
 
 
 # Import subnet calculator
@@ -50,7 +49,6 @@ class ConfigScan(tk.Canvas):
         elif ( (len(input_target) != len(input_importance)) or not (input_target) or not(input_importance) ):
             self.itemconfig(self.err, text='Number of hosts and importance are not the same.', fill="red")
         else:
-            print(input_importance)
             for importance_value in input_importance:
                 if(float(importance_value) not in self.importance_range):
                     flag = 1
@@ -76,8 +74,6 @@ class ConfigScan(tk.Canvas):
         else:
             self.input_importance = map(float, map(removeIndex, self.input_importance_subnet.get()))
             self.input_target = map(str, map(removeIndex, self.input_target_subnet.get()))
-            print("hahahahey")
-            print(self.input_importance)
             for importance_value in self.input_importance:
                 if(importance_value not in self.importance_range):
                     flag = 1

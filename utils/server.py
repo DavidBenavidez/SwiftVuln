@@ -192,10 +192,3 @@ class scanDetailsFuncs:
         rows = session.query(func.count(ScanDetails.id)).filter(ScanDetails.host==host).scalar()
         session.close()
         return(rows)
-
-# db = scanDetailsFuncs()
-
-# scans = db.getScans()
-
-# for scan in scans:
-#     print(scan.cvss_score)
