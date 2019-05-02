@@ -31,7 +31,7 @@ class CheckSetup(tk.Canvas):
         self.itemconfig(self.loader, text='Updating OpenVAS\' Feeds... (Can take up to 20 Minutes)', fill=colors.DGRAY)
         def update():
             try:
-                result = str(subprocess.check_output(['bash', '-c', './update-openvas'])) # Update openVAS
+                result = str(subprocess.check_output(['bash', '-c', 'scripts/update-openvas'])) # Update openVAS
                 # initialize openvas
                 t2 = Thread(target = self._initOpenVAS)
                 t2.start() 
@@ -51,7 +51,7 @@ class CheckSetup(tk.Canvas):
         self.no.destroy()
         self.itemconfig(self.loader, text='Initializing OpenVAS...', fill=colors.DGRAY)
         def update():
-            subprocess.check_output(['bash', '-c', './start-openvas']) # Initialize openVAS
+            subprocess.check_output(['bash', '-c', 'scripts/start-openvas']) # Initialize openVAS
             self.root.changeScreen(pages.Scan)
            
         t = Thread(target = update)
