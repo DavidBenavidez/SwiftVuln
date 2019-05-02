@@ -6,9 +6,10 @@ from ui import create_rounded_rectangle
 
 
 # Import system Packages
-import menu
 import sys
 sys.path.append("..")
+
+import pages
 
 class Scan(tk.Canvas):
     def __init__(self, root):
@@ -17,13 +18,13 @@ class Scan(tk.Canvas):
         self._loadView()
     
     def toggleMain(self, event=None):
-        self.root.changeScreen(menu.Main)
+        self.root.changeScreen(pages.Main)
          
     def toggleDetails(self, event=None):
-        self.root.changeScreen(menu.Details)
+        self.root.changeScreen(pages.Details)
         
     def startScan(self, event=None):
-        self.root.changeScreen(menu.InitScan)
+        self.root.changeScreen(pages.InitScan)
 
     def _loadView(self):
             # CREATE NAVBAR

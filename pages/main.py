@@ -14,9 +14,10 @@ matplotlib.use("TkAgg")
 
 # Import system Packages
 import operator
-import menu
 import sys
 sys.path.append("..")
+
+import pages
 
 from server import scanDetailsFuncs, scanFuncs
 from datetime import date
@@ -30,10 +31,10 @@ class Main(tk.Canvas):
      
 
     def toggleScan(self, event=None):
-        self.root.changeScreen(menu.Scan)
+        self.root.changeScreen(pages.Scan)
         
     def toggleDetails(self, event=None):
-        self.root.changeScreen(menu.Details)    
+        self.root.changeScreen(pages.Details)    
     
     def getHostsData(self, setVar):
             labels = []
@@ -47,7 +48,7 @@ class Main(tk.Canvas):
             # By month
             if setVar.get() == date_range[0]: 
                 scans_list = db2.getScansByRange(str(date.today()),1)
-            # Last 3 montjs
+            # Last 3 months
             elif setVar.get() == date_range[1]:
                 scans_list = db2.getScansByRange(str(date.today()),3)
             # Last 6 months

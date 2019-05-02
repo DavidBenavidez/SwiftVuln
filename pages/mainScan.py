@@ -8,7 +8,6 @@ from ui import create_rounded_rectangle
 # Import system Packages
 import Queue as queue
 import time
-import menu
 import sys
 sys.path.append("..")
 
@@ -21,11 +20,13 @@ from functools import partial
 from threading import Semaphore, Thread
 from openvas_lib import VulnscanManager, VulnscanException
 
+import pages
+
 class MainScan(tk.Canvas):
     def __init__(self, root):
         tk.Canvas.__init__(self, root, width=700, height=600, bd=0, highlightthickness=0, bg=colors.DWHITE)
         self.root = root
-        
+
         t = Thread(target = self._loadView)
         t.start()
 
@@ -33,12 +34,12 @@ class MainScan(tk.Canvas):
         t2.start()
 
     def status(self, i):
-        print(str(i) + "%")
-        toPrint = "Scanning " + str(i) + "%"
+        print(str(int(i)) + "%")
+        toPrint = "Scanning " + str(int(i)) + "%"
         self.itemconfig(self.loader, text=toPrint, fill=colors.DGRAY)
     
     def toggleNext(self, event=None):
-        self.root.changeScreen(menu.Details)
+        self.root.changeScreen(pages.Details)
 
     def scan(self, input_targets):
         # Merge targets into one string separated by comma
@@ -154,7 +155,7 @@ class MainScan(tk.Canvas):
 
         sem.acquire()
 
-        # Displau Loader 
+        # Display Loader 
         self.create_text(500, 80, font=("Lato", 50), text='NETWORK SECURITY SCORE', fill=colors.DGRAY)
         self.loader = self.create_text(515, 560, font=("Lato", 12, "bold"), text='Scanning 0%', fill=colors.DGRAY)
                 

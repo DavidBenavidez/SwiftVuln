@@ -55,6 +55,18 @@ class scanFuncs:
         session.close()
         return(float(scan.scan_score))
     
+    def getScanDate(self, scan_id):
+        session = self.Session()
+        try:
+            scan = session.query(Scan).filter(Scan.scan_id==scan_id).one()
+        except:
+            session.close()
+            return(None)
+
+        session.close()
+        return(str(scan.scan_date))
+    
+    
     
     def getScansByRange(self, cur_date, date_range):
         session = self.Session()

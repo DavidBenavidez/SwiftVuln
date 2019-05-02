@@ -6,7 +6,7 @@ from ui import create_rounded_rectangle
 
 
 # Import system Packages
-import menu
+import pages
 import sys
 sys.path.append("..")
 
@@ -21,10 +21,10 @@ class Details(tk.Canvas):
         self._loadView()
     
     def toggleMain(self, event=None):
-        self.root.changeScreen(menu.Main)
+        self.root.changeScreen(pages.Main)
      
     def toggleScan(self, event=None):
-        self.root.changeScreen(menu.Scan)
+        self.root.changeScreen(pages.Scan)
         
         
     def _loadView(self):
@@ -77,7 +77,7 @@ class Details(tk.Canvas):
                 self.scans_db.deleteScan(self.scan_id)
                 self.details_db.deleteScan(self.scan_id)
                 top.destroy()
-                self.root.changeScreen(menu.Details)
+                self.root.changeScreen(pages.Details)
 
             # Note here that Tkinter passes an event object to onselect()
             w = evt.widget
@@ -94,6 +94,7 @@ class Details(tk.Canvas):
             # Get data
             self.details_db = scanDetailsFuncs()
             scan_score = self.scans_db.getScanScore(scan_id)
+            scan_date = self.scans_db.getScanDate(scan_id)
             scan_details = self.details_db.getScanDetails(scan_id)
 
             # Instantiate new window
@@ -107,6 +108,7 @@ class Details(tk.Canvas):
             top.geometry('600x600')
 
             canvas = tk.Canvas(top, bg=colors.DWHITE, width = 600, height = 600)
+            canvas.create_text(5, 12, anchor="w", font=("Lato", 9), text= (scan_date), fill=colors.DGRAY)
             canvas.create_text(80, 30, font=("Lato", 15, 'bold'), text="TOP NVTS FOR: " , fill=colors.DGRAY)
             canvas.create_text(160, 30, anchor="w", font=("Lato", 15, 'bold'), text=title, fill=colors.VBLUE)
             
@@ -132,6 +134,11 @@ class Details(tk.Canvas):
                     counter += 1
                     listbox.insert(counter, "%s" % (detail.summary))
                     counter += 1
+                    if(detail.link):
+                        listbox.insert(counter, "LINK: ")
+                        counter += 1
+                        listbox.insert(counter, "%s" % (detail.link))
+                        counter += 1
                     listbox.insert(counter, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n")
                     counter += 1
             else:

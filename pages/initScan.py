@@ -6,9 +6,10 @@ from ui import create_rounded_rectangle
 
 
 # Import system Packages
-import menu
 import sys
 sys.path.append("..")
+
+import pages
 
 class InitScan(tk.Canvas):
     def __init__(self, root):
@@ -18,14 +19,14 @@ class InitScan(tk.Canvas):
     
     def toggleSubnet(self, event=None):
         self.root.scan_type = "Subnet"
-        self.root.changeScreen(menu.ConfigScan)
+        self.root.changeScreen(pages.ConfigScan)
          
     def toggleOne(self, event=None):
         self.root.scan_type = "One"
-        self.root.changeScreen(menu.ConfigScan)
+        self.root.changeScreen(pages.ConfigScan)
     
     def toggleBack(self, event=None):
-        self.root.changeScreen(menu.Scan)
+        self.root.changeScreen(pages.Scan)
         
     def _loadView(self):
         logo = tk.PhotoImage(file='assets/buttons/logo_blue.png')

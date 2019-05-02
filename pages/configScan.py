@@ -9,10 +9,11 @@ from ui import create_rounded_rectangle
 import ipcalc
 
 # Import system Packages
-import menu
 import sys
 import time
 sys.path.append("..")
+
+import pages
 
 class ConfigScan(tk.Canvas):
     def __init__(self, root):
@@ -24,10 +25,12 @@ class ConfigScan(tk.Canvas):
         self.input_target_subnet = tk.Variable()
         self.input_importance_subnet = tk.Variable()
         self.input_subnet = tk.StringVar()
+
+        self.importance_range = [0.4, 0.6, 0.8, 1.6, 2.0]
         self._loadView()
     
     def toggleBack(self, event=None):
-        self.root.changeScreen(menu.InitScan)
+        self.root.changeScreen(pages.InitScan)
     
     def checkInputsOne(self, event=None):
         # Check value of inputs if one by one input of hosts was chosen
@@ -40,17 +43,24 @@ class ConfigScan(tk.Canvas):
         
         input_target = filter(None, input_target)
         input_importance = filter(None, input_importance)
+        flag = 0
 
         if not input_target or not input_importance or not input_name:
             self.itemconfig(self.err, text='Fill out all the the fields', fill="red")
         elif ( (len(input_target) != len(input_importance)) or not (input_target) or not(input_importance) ):
             self.itemconfig(self.err, text='Number of hosts and importance are not the same.', fill="red")
         else:
-            self.root.input_name = input_name
-            self.root.input_target = input_target
-            self.root.input_importance = input_importance
-            self.root.changeScreen(menu.MainScan)
-    
+            print(input_importance)
+            for importance_value in input_importance:
+                if(float(importance_value) not in self.importance_range):
+                    flag = 1
+                    self.itemconfig(self.err, text='Invalid Importance Value', fill="red")
+            if flag == 0:
+                self.root.input_name = input_name
+                self.root.input_target = input_target
+                self.root.input_importance = input_importance
+                self.root.changeScreen(pages.MainScan)
+            flag = 0
     def checkInputsSubnet(self, event=None):
         # Check value of inputs if one by one input of hosts was chosen
         # if 
@@ -60,16 +70,25 @@ class ConfigScan(tk.Canvas):
             value = value.split(")")[1]
             return(value)
 
+        flag = 0
         if not self.input_name.get() or not self.input_subnet.get() or not self.input_importance_subnet.get():
             self.itemconfig(self.err, text='Fill out all the the fields', fill="red")
         else:
             self.input_importance = map(float, map(removeIndex, self.input_importance_subnet.get()))
             self.input_target = map(str, map(removeIndex, self.input_target_subnet.get()))
-            
-            self.root.input_name = self.input_name.get()
-            self.root.input_target = self.input_target
-            self.root.input_importance = self.input_importance
-            self.root.changeScreen(menu.MainScan)
+            print("hahahahey")
+            print(self.input_importance)
+            for importance_value in self.input_importance:
+                if(importance_value not in self.importance_range):
+                    flag = 1
+                    self.itemconfig(self.err, text='Invalid Importance Value', fill="red")
+
+            if flag == 0:
+                self.root.input_name = self.input_name.get()
+                self.root.input_target = self.input_target
+                self.root.input_importance = self.input_importance
+                self.root.changeScreen(pages.MainScan)
+            flag = 0
 
     def _getSubnets(self, event=None):
         try:
@@ -115,9 +134,17 @@ class ConfigScan(tk.Canvas):
                 bg=colors.DWHITE,
                 font='Lato'
             )
+            impExampleLabel = tk.Label(
+                self,
+                text='Enter value from 0.4, 0.8, 1.2, 1.6, and 2.0',
+                fg='Black',
+                bg=colors.DWHITE,
+                font=('Lato', 9)
+            )
 
-            impLabel.place(x=150, y=380, anchor='center')
-            newImp.place(x=100, y=400, height=30, width=100)
+            impLabel.place(x=130, y=380, anchor='center')
+            newImp.place(x=80, y=400, height=30, width=100)
+            impExampleLabel.place(x=130, y=450, anchor='center')
             impLabel.focus()
             newImp.bind('<Return>', setImportance)
         except:
@@ -231,7 +258,7 @@ class ConfigScan(tk.Canvas):
             submit.config(image=self.submit_img)
             submit.place(x=443, y=510)
 
-            self.err = self.create_text(543, 560, font=("Lato", 12, "bold"), text='Number of hosts and importance are not the same.', fill=colors.DWHITE)
+            self.err = self.create_text(538, 570, font=("Lato", 12, "bold"), text='Number of hosts and importance are not the same.', fill=colors.DWHITE)
         else:
             nameField = tk.Entry(
                 self,

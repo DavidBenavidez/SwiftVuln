@@ -1,15 +1,18 @@
 import Tkinter as tk 
 from os import _exit
 
-import menu
+import pages
 
+import subprocess
+import time
+import re
 
 class MainApplication(tk.Tk):
     def __init__(self):
         tk.Tk.__init__(self)
         self.title('SwiftVuln')
         self._screen = None
-        self.changeScreen(menu.Scan)
+        self.changeScreen(pages.CheckSetup)
     
     def handleWindowClose(self):
         self.destroy()
@@ -30,7 +33,6 @@ if __name__ == '__main__':
     width, height = app.winfo_screenwidth(), app.winfo_screenheight()
 
     app.geometry('1000x600')
-    # app.geometry('%dx%d+0+0' % (width,height))
     app.resizable(0, 0)
     
     app.mainloop()
