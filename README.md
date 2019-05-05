@@ -1,4 +1,3 @@
-# SwiftVuln
 <h1 align="center">
   <br />
   <img src="./assets/buttons/logo_blue.png" alt="icon" width="450px" />
