@@ -61,7 +61,6 @@ class Details(tk.Canvas):
         self.scans_db = scanFuncs()
         scan_list = self.scans_db.getScans()
         scans_listbox = tk.Listbox(self, height=22, width=60, font=('Lato', 12), fg=colors.DGRAY, cursor="mouse")
-        scroll = tk.Scrollbar(self, command=scans_listbox.yview)
 
         counter = 1
         for scan in scan_list:
@@ -111,7 +110,12 @@ class Details(tk.Canvas):
             
             # instantiate list box
             listbox = tk.Listbox(top, height=27, width=74, font=('Lato', 10), fg=colors.DGRAY)
-            scroll = tk.Scrollbar(top, command=listbox.xview)
+            scrollbar = tk.Scrollbar(top, command=listbox.xview)
+            scrollbar.config(command=listbox.yview)
+            scrollbar.pack(side="right", fill="y")
+
+            listbox.config(yscrollcommand=scrollbar.set)
+            
             counter = 1
             if len(scan_details):
                 for detail in scan_details:
@@ -143,6 +147,7 @@ class Details(tk.Canvas):
 
             
             listbox.place(x=2, y=50)
+            
             # Print Quantified Score
             if scan_score > 8.9:
                 scan_score = str(scan_score) + " Critical"

@@ -295,10 +295,9 @@ class ConfigScan(tk.Canvas):
             self.create_text(305, 330, font=("Lato", 10, "bold"), text="IMPORTANCE", fill=colors.DGRAY)
             
             self.listbox_imp = tk.Listbox(self, listvariable = self.input_importance_subnet, height=7, width=54, font=('Lato', 10), fg=colors.DGRAY)
-            scroll_imp = tk.Scrollbar(self, command=self.listbox_imp.xview)
-
+            # Add scrollbar
+            
             self.listbox_hosts = tk.Listbox(self, listvariable=self.input_target_subnet, height=7, width=54, font=('Lato', 10), fg=colors.DGRAY)
-            scroll_hosts = tk.Scrollbar(self, command=self.listbox_hosts.xview)
             
             # Place inputs
             nameLabel.place(x=530, y=130, anchor='center')
