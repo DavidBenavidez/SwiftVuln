@@ -16,8 +16,8 @@ class Scan(tk.Canvas):
         self.root = root   
         self._loadView()
     
-    def toggleMain(self, event=None):
-        self.root.changeScreen(pages.Main)
+    def toggleDash(self, event=None):
+        self.root.changeScreen(pages.Dashboard)
          
     def toggleDetails(self, event=None):
         self.root.changeScreen(pages.Details)
@@ -52,10 +52,10 @@ class Scan(tk.Canvas):
             self.create_image(145, 310, image=self.scan, anchor=tk.W)
             self.create_text(172, 350, text='SCAN', fill=colors.DGRAY)
             
-            self.create_image(145, 470, image=self.details_off, anchor=tk.W, tags="DETAILS_SWITCH", activeimage=self.details)
+            self.create_image(156, 470, image=self.details_off, anchor=tk.W, tags="DETAILS_SWITCH", activeimage=self.details)
             self.create_text(172, 520, text='DETAILS', fill=colors.GRAY)
             
-            self.tag_bind('MAIN_SWITCH','<ButtonPress-1>', self.toggleMain)
+            self.tag_bind('MAIN_SWITCH','<ButtonPress-1>', self.toggleDash)
             self.tag_bind('DETAILS_SWITCH','<ButtonPress-1>', self.toggleDetails)
             #########################################################
 

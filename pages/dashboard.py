@@ -20,8 +20,12 @@ import pages
 
 from utils.server import scanDetailsFuncs, scanFuncs
 from datetime import date
+OZoneIzotopeSemiWhite = "#c0c4ca"
+buttonBackground = "#303336"
+buttonforeground = "#cdd0d7"
+BACKGROUND2 = "#1e1f21"
 
-class Main(tk.Canvas):
+class Dashboard(tk.Canvas):
     def __init__(self, root):
         tk.Canvas.__init__(self, root, width=700, height=600, bd=0, highlightthickness=0, bg=colors.DWHITE)
         
@@ -145,7 +149,7 @@ class Main(tk.Canvas):
             self.create_image(145, 310, image=self.scan_off, anchor=tk.W, tags="SCAN_SWITCH", activeimage=self.scan)
             self.create_text(172, 350, text='SCAN', fill=colors.GRAY)
             
-            self.create_image(145, 470, image=self.details_off, anchor=tk.W, tags="DETAILS_SWITCH", activeimage=self.details)
+            self.create_image(156, 470, image=self.details_off, anchor=tk.W, tags="DETAILS_SWITCH", activeimage=self.details)
             self.create_text(172, 520, text='DETAILS', fill=colors.GRAY)
 
             self.tag_bind('SCAN_SWITCH','<ButtonPress-1>', self.toggleScan)
@@ -158,6 +162,8 @@ class Main(tk.Canvas):
             # Create Dropdown Menu
             optionList = ["This Month", "Last 3 Months", "Last 6 Months", "Last Year"]
             dropMenu = tk.OptionMenu(self, setVar, *optionList)
+            dropMenu.config(font=("lato", 11),fg=buttonforeground, bg=buttonBackground, activebackground=OZoneIzotopeSemiWhite, activeforeground=BACKGROUND2, bd =0)
+            dropMenu["menu"].config(font=("lato", 12), fg=buttonforeground, bg=buttonBackground, activebackground=OZoneIzotopeSemiWhite, activeforeground=BACKGROUND2, borderwidth = 0)
             dropMenu.place(x=350,y=50)
             
             # MATPLOT ===============================

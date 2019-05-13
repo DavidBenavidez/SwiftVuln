@@ -1,0 +1,1650 @@
+I Summary
+=========
+
+This document reports on the results of an automatic security scan.
+The report first summarises the results found.
+Then, for each host, the report describes every issue found.
+Please consider the advice given in each description, in order to rectify
+the issue.
+
+All dates are displayed using the timezone "Coordinated Universal Time",
+which is abbreviated "UTC".
+
+Vendor security updates are not trusted.
+
+Overrides are off.  Even when a result has an override, this report uses
+the actual threat of the result.
+
+Notes are included in the report.Information on overrides is included in the report.
+
+This report might not show details of all issues that were found.
+Issues with the threat level "High" are not shown.
+Issues with the threat level "Medium" are not shown.
+Issues with the threat level "Low" are not shown.
+Issues with the threat level "Log" are not shown.
+Issues with the threat level "Debug" are not shown.
+Issues with the threat level "False Positive" are not shown.
+Only results with a minimum QoD of 70 are shown.
+
+This report contains all 34 results selected by the
+filtering described above.  Before filtering there were 41 results.
+
+Scan started: Mon Apr 22 09:14:18 2019 UTC
+Scan ended:   Mon Apr 22 09:16:52 2019 UTC
+Task:         openvas_lib_scan_10.0.4.82, 10.0.5.141, 10.0.4.248, 10.0.4.237, 10.0.5.184_5M6GlLgyKZUvZZXGKr81
+
+Host Summary
+************
+
+Host            High  Medium  Low  Log  False Positive
+10.0.4.237         0       0    0    4               0
+10.0.4.248         0       0    0    4               0
+10.0.5.184         0       0    0    4               0
+10.0.4.82          3       4    1   14               0
+Total: 4           3       4    1   26               0
+
+
+II Results per Host
+===================
+
+Host 10.0.4.237
+***************
+
+Scanning of this host started at: Mon Apr 22 09:14:24 2019 UTC
+Number of results: 4
+
+Port Summary for Host 10.0.4.237
+--------------------------------
+
+Service (Port)          Threat Level
+139/tcp                 Log
+135/tcp                 Medium
+general/icmp            Log
+general/icmp            Log
+general/tcp             Log
+general/icmp            Log
+general/CPE-T           Log
+general/tcp             Low
+general/SMBClient       Log
+general/tcp             Log
+22/tcp                  High
+general/CPE-T           Log
+general/CPE-T           Log
+445/tcp                 Log
+general/CPE-T           Log
+general/tcp             Log
+general/icmp            Log
+
+Security Issues for Host 10.0.4.237
+-----------------------------------
+
+Issue
+-----
+NVT:    Check for enabled / working Port scanner plugin
+OID:    1.3.6.1.4.1.25623.1.0.108323
+Threat: Log (CVSS: 0.0)
+Port:   general/tcp
+
+Summary:
+The script reports if:
+  - a custom scan configuration is in use without having a Port scanner from
+  the 'Port scanners' family enabled.
+  - a port scanner plugin was running into a timeout.
+  - a required port scanner (e.g. nmap) is not installed.
+
+Vulnerability Detection Result:
+The host wasn't scanned due to the following possible reasons:
+ - No Port scanner plugin from the "Port scanners" family is included in this sc!
+an configuration. Recommended: Nmap (NASL wrapper).
+ - The Port scanner plugin reached a timeout during the port scanning phase. Ple!
+ase either choose a port range for this target containing less ports or raise th!
+e "scanner_plugins_timeout" scanner preference to a higher timeout.
+
+Solution:
+Based on the script output please:
+  - add a Port scanner plugin from the 'Port scanners' family to this scan
+  configuration. Recommended: Nmap (NASL wrapper).
+  - either choose a port range for this target containing less ports or raise
+  the 'scanner_plugins_timeout' scanner preference to a higher timeout.
+  - install the 'nmap' binary/package or make it accessible to the scanner.
+
+Log Method:
+Details:
+Check for enabled / working Port scanner plugin
+(OID: 1.3.6.1.4.1.25623.1.0.108323)
+Version used: $Revision: 10122 $
+
+References:
+Other:
+    http://docs.greenbone.net/GSM-Manual/gos-4/en/performance.html#scan-performance
+    http://docs.greenbone.net/GSM-Manual/gos-4/en/vulnerabilitymanagement.html?highlight=scanner_plugins_timeout#general-preferences
+
+
+Issue
+-----
+NVT:    CPE Inventory
+OID:    1.3.6.1.4.1.25623.1.0.810002
+Threat: Log (CVSS: 0.0)
+Port:   general/CPE-T
+
+Summary:
+This routine uses information collected by other routines about
+  CPE identities of operating systems, services and
+  applications detected during the scan.
+
+Vulnerability Detection Result:
+10.0.4.237|cpe:/o:linux:kernel
+
+Log Method:
+Details:
+CPE Inventory
+(OID: 1.3.6.1.4.1.25623.1.0.810002)
+Version used: $Revision: 14324 $
+
+References:
+Other:
+    http://cpe.mitre.org/
+
+
+Issue
+-----
+NVT:    ICMP Timestamp Detection
+OID:    1.3.6.1.4.1.25623.1.0.103190
+Threat: Log (CVSS: 0.0)
+Port:   general/icmp
+
+Summary:
+The remote host responded to an ICMP timestamp request.
+  The Timestamp Reply is an ICMP message which replies to a Timestamp message. I!
+t consists
+  of the originating timestamp sent by the sender of the Timestamp as well as a !
+receive
+  timestamp and a transmit timestamp. This information could theoretically be us!
+ed to
+  exploit weak time-based random number generators in other services.
+
+Vulnerability Detection Result:
+Vulnerability was detected according to the Vulnerability Detection Method.
+
+Log Method:
+Details:
+ICMP Timestamp Detection
+(OID: 1.3.6.1.4.1.25623.1.0.103190)
+Version used: $Revision: 10411 $
+
+References:
+CVE: CVE-1999-0524
+CERT: CB-K15/1514
+, CB-K14/0632
+, DFN-CERT-2014-0658
+
+Other:
+    http://www.ietf.org/rfc/rfc0792.txt
+
+
+Issue
+-----
+NVT:    OS Detection Consolidation and Reporting
+OID:    1.3.6.1.4.1.25623.1.0.105937
+Threat: Log (CVSS: 0.0)
+Port:   general/tcp
+
+Summary:
+This script consolidates the OS information detected by several NVTs and tries t!
+o find the best matching OS.
+  Furthermore it reports all previously collected information leading to this be!
+st matching OS. It also reports possible additional information
+  which might help to improve the OS detection.
+  If any of this information is wrong or could be improved please consider to re!
+port these to the referenced community portal.
+
+Vulnerability Detection Result:
+Best matching OS:
+OS: Linux Kernel
+CPE: cpe:/o:linux:kernel
+Found by NVT: 1.3.6.1.4.1.25623.1.0.102002 (ICMP based OS Fingerprinting)
+Concluded from ICMP based OS fingerprint
+Setting key "Host/runs_unixoide" based on this information
+
+Log Method:
+Details:
+OS Detection Consolidation and Reporting
+(OID: 1.3.6.1.4.1.25623.1.0.105937)
+Version used: $Revision: 14244 $
+
+References:
+Other:
+    https://community.greenbone.net/c/vulnerability-tests
+
+
+Host 10.0.4.248
+***************
+
+Scanning of this host started at: Mon Apr 22 09:14:24 2019 UTC
+Number of results: 4
+
+Port Summary for Host 10.0.4.248
+--------------------------------
+
+Service (Port)          Threat Level
+139/tcp                 Log
+135/tcp                 Medium
+general/icmp            Log
+general/icmp            Log
+general/tcp             Log
+general/icmp            Log
+general/CPE-T           Log
+general/tcp             Low
+general/SMBClient       Log
+general/tcp             Log
+22/tcp                  High
+general/CPE-T           Log
+general/CPE-T           Log
+445/tcp                 Log
+general/CPE-T           Log
+general/tcp             Log
+general/icmp            Log
+
+Security Issues for Host 10.0.4.248
+-----------------------------------
+
+Issue
+-----
+NVT:    Check for enabled / working Port scanner plugin
+OID:    1.3.6.1.4.1.25623.1.0.108323
+Threat: Log (CVSS: 0.0)
+Port:   general/tcp
+
+Summary:
+The script reports if:
+  - a custom scan configuration is in use without having a Port scanner from
+  the 'Port scanners' family enabled.
+  - a port scanner plugin was running into a timeout.
+  - a required port scanner (e.g. nmap) is not installed.
+
+Vulnerability Detection Result:
+The host wasn't scanned due to the following possible reasons:
+ - No Port scanner plugin from the "Port scanners" family is included in this sc!
+an configuration. Recommended: Nmap (NASL wrapper).
+ - The Port scanner plugin reached a timeout during the port scanning phase. Ple!
+ase either choose a port range for this target containing less ports or raise th!
+e "scanner_plugins_timeout" scanner preference to a higher timeout.
+
+Solution:
+Based on the script output please:
+  - add a Port scanner plugin from the 'Port scanners' family to this scan
+  configuration. Recommended: Nmap (NASL wrapper).
+  - either choose a port range for this target containing less ports or raise
+  the 'scanner_plugins_timeout' scanner preference to a higher timeout.
+  - install the 'nmap' binary/package or make it accessible to the scanner.
+
+Log Method:
+Details:
+Check for enabled / working Port scanner plugin
+(OID: 1.3.6.1.4.1.25623.1.0.108323)
+Version used: $Revision: 10122 $
+
+References:
+Other:
+    http://docs.greenbone.net/GSM-Manual/gos-4/en/performance.html#scan-performance
+    http://docs.greenbone.net/GSM-Manual/gos-4/en/vulnerabilitymanagement.html?highlight=scanner_plugins_timeout#general-preferences
+
+
+Issue
+-----
+NVT:    CPE Inventory
+OID:    1.3.6.1.4.1.25623.1.0.810002
+Threat: Log (CVSS: 0.0)
+Port:   general/CPE-T
+
+Summary:
+This routine uses information collected by other routines about
+  CPE identities of operating systems, services and
+  applications detected during the scan.
+
+Vulnerability Detection Result:
+10.0.4.248|cpe:/o:linux:kernel
+
+Log Method:
+Details:
+CPE Inventory
+(OID: 1.3.6.1.4.1.25623.1.0.810002)
+Version used: $Revision: 14324 $
+
+References:
+Other:
+    http://cpe.mitre.org/
+
+
+Issue
+-----
+NVT:    ICMP Timestamp Detection
+OID:    1.3.6.1.4.1.25623.1.0.103190
+Threat: Log (CVSS: 0.0)
+Port:   general/icmp
+
+Summary:
+The remote host responded to an ICMP timestamp request.
+  The Timestamp Reply is an ICMP message which replies to a Timestamp message. I!
+t consists
+  of the originating timestamp sent by the sender of the Timestamp as well as a !
+receive
+  timestamp and a transmit timestamp. This information could theoretically be us!
+ed to
+  exploit weak time-based random number generators in other services.
+
+Vulnerability Detection Result:
+Vulnerability was detected according to the Vulnerability Detection Method.
+
+Log Method:
+Details:
+ICMP Timestamp Detection
+(OID: 1.3.6.1.4.1.25623.1.0.103190)
+Version used: $Revision: 10411 $
+
+References:
+CVE: CVE-1999-0524
+CERT: CB-K15/1514
+, CB-K14/0632
+, DFN-CERT-2014-0658
+
+Other:
+    http://www.ietf.org/rfc/rfc0792.txt
+
+
+Issue
+-----
+NVT:    OS Detection Consolidation and Reporting
+OID:    1.3.6.1.4.1.25623.1.0.105937
+Threat: Log (CVSS: 0.0)
+Port:   general/tcp
+
+Summary:
+This script consolidates the OS information detected by several NVTs and tries t!
+o find the best matching OS.
+  Furthermore it reports all previously collected information leading to this be!
+st matching OS. It also reports possible additional information
+  which might help to improve the OS detection.
+  If any of this information is wrong or could be improved please consider to re!
+port these to the referenced community portal.
+
+Vulnerability Detection Result:
+Best matching OS:
+OS: Linux Kernel
+CPE: cpe:/o:linux:kernel
+Found by NVT: 1.3.6.1.4.1.25623.1.0.102002 (ICMP based OS Fingerprinting)
+Concluded from ICMP based OS fingerprint
+Setting key "Host/runs_unixoide" based on this information
+
+Log Method:
+Details:
+OS Detection Consolidation and Reporting
+(OID: 1.3.6.1.4.1.25623.1.0.105937)
+Version used: $Revision: 14244 $
+
+References:
+Other:
+    https://community.greenbone.net/c/vulnerability-tests
+
+
+Host 10.0.5.184
+***************
+
+Scanning of this host started at: Mon Apr 22 09:14:24 2019 UTC
+Number of results: 4
+
+Port Summary for Host 10.0.5.184
+--------------------------------
+
+Service (Port)          Threat Level
+139/tcp                 Log
+135/tcp                 Medium
+general/icmp            Log
+general/icmp            Log
+general/tcp             Log
+general/icmp            Log
+general/CPE-T           Log
+general/tcp             Low
+general/SMBClient       Log
+general/tcp             Log
+22/tcp                  High
+general/CPE-T           Log
+general/CPE-T           Log
+445/tcp                 Log
+general/CPE-T           Log
+general/tcp             Log
+general/icmp            Log
+
+Security Issues for Host 10.0.5.184
+-----------------------------------
+
+Issue
+-----
+NVT:    Check for enabled / working Port scanner plugin
+OID:    1.3.6.1.4.1.25623.1.0.108323
+Threat: Log (CVSS: 0.0)
+Port:   general/tcp
+
+Summary:
+The script reports if:
+  - a custom scan configuration is in use without having a Port scanner from
+  the 'Port scanners' family enabled.
+  - a port scanner plugin was running into a timeout.
+  - a required port scanner (e.g. nmap) is not installed.
+
+Vulnerability Detection Result:
+The host wasn't scanned due to the following possible reasons:
+ - No Port scanner plugin from the "Port scanners" family is included in this sc!
+an configuration. Recommended: Nmap (NASL wrapper).
+ - The Port scanner plugin reached a timeout during the port scanning phase. Ple!
+ase either choose a port range for this target containing less ports or raise th!
+e "scanner_plugins_timeout" scanner preference to a higher timeout.
+
+Solution:
+Based on the script output please:
+  - add a Port scanner plugin from the 'Port scanners' family to this scan
+  configuration. Recommended: Nmap (NASL wrapper).
+  - either choose a port range for this target containing less ports or raise
+  the 'scanner_plugins_timeout' scanner preference to a higher timeout.
+  - install the 'nmap' binary/package or make it accessible to the scanner.
+
+Log Method:
+Details:
+Check for enabled / working Port scanner plugin
+(OID: 1.3.6.1.4.1.25623.1.0.108323)
+Version used: $Revision: 10122 $
+
+References:
+Other:
+    http://docs.greenbone.net/GSM-Manual/gos-4/en/performance.html#scan-performance
+    http://docs.greenbone.net/GSM-Manual/gos-4/en/vulnerabilitymanagement.html?highlight=scanner_plugins_timeout#general-preferences
+
+
+Issue
+-----
+NVT:    CPE Inventory
+OID:    1.3.6.1.4.1.25623.1.0.810002
+Threat: Log (CVSS: 0.0)
+Port:   general/CPE-T
+
+Summary:
+This routine uses information collected by other routines about
+  CPE identities of operating systems, services and
+  applications detected during the scan.
+
+Vulnerability Detection Result:
+10.0.5.184|cpe:/o:linux:kernel
+
+Log Method:
+Details:
+CPE Inventory
+(OID: 1.3.6.1.4.1.25623.1.0.810002)
+Version used: $Revision: 14324 $
+
+References:
+Other:
+    http://cpe.mitre.org/
+
+
+Issue
+-----
+NVT:    ICMP Timestamp Detection
+OID:    1.3.6.1.4.1.25623.1.0.103190
+Threat: Log (CVSS: 0.0)
+Port:   general/icmp
+
+Summary:
+The remote host responded to an ICMP timestamp request.
+  The Timestamp Reply is an ICMP message which replies to a Timestamp message. I!
+t consists
+  of the originating timestamp sent by the sender of the Timestamp as well as a !
+receive
+  timestamp and a transmit timestamp. This information could theoretically be us!
+ed to
+  exploit weak time-based random number generators in other services.
+
+Vulnerability Detection Result:
+Vulnerability was detected according to the Vulnerability Detection Method.
+
+Log Method:
+Details:
+ICMP Timestamp Detection
+(OID: 1.3.6.1.4.1.25623.1.0.103190)
+Version used: $Revision: 10411 $
+
+References:
+CVE: CVE-1999-0524
+CERT: CB-K15/1514
+, CB-K14/0632
+, DFN-CERT-2014-0658
+
+Other:
+    http://www.ietf.org/rfc/rfc0792.txt
+
+
+Issue
+-----
+NVT:    OS Detection Consolidation and Reporting
+OID:    1.3.6.1.4.1.25623.1.0.105937
+Threat: Log (CVSS: 0.0)
+Port:   general/tcp
+
+Summary:
+This script consolidates the OS information detected by several NVTs and tries t!
+o find the best matching OS.
+  Furthermore it reports all previously collected information leading to this be!
+st matching OS. It also reports possible additional information
+  which might help to improve the OS detection.
+  If any of this information is wrong or could be improved please consider to re!
+port these to the referenced community portal.
+
+Vulnerability Detection Result:
+Best matching OS:
+OS: Linux Kernel
+CPE: cpe:/o:linux:kernel
+Found by NVT: 1.3.6.1.4.1.25623.1.0.102002 (ICMP based OS Fingerprinting)
+Concluded from ICMP based OS fingerprint
+Setting key "Host/runs_unixoide" based on this information
+
+Log Method:
+Details:
+OS Detection Consolidation and Reporting
+(OID: 1.3.6.1.4.1.25623.1.0.105937)
+Version used: $Revision: 14244 $
+
+References:
+Other:
+    https://community.greenbone.net/c/vulnerability-tests
+
+
+Host 10.0.4.82
+**************
+
+Scanning of this host started at: Mon Apr 22 09:14:24 2019 UTC
+Number of results: 22
+
+Port Summary for Host 10.0.4.82
+-------------------------------
+
+Service (Port)          Threat Level
+139/tcp                 Log
+135/tcp                 Medium
+general/icmp            Log
+general/icmp            Log
+general/tcp             Log
+general/icmp            Log
+general/CPE-T           Log
+general/tcp             Low
+general/SMBClient       Log
+general/tcp             Log
+22/tcp                  High
+general/CPE-T           Log
+general/CPE-T           Log
+445/tcp                 Log
+general/CPE-T           Log
+general/tcp             Log
+general/icmp            Log
+
+Security Issues for Host 10.0.4.82
+----------------------------------
+
+Issue
+-----
+NVT:    CPE Inventory
+OID:    1.3.6.1.4.1.25623.1.0.810002
+Threat: Log (CVSS: 0.0)
+Port:   general/CPE-T
+
+Summary:
+This routine uses information collected by other routines about
+  CPE identities of operating systems, services and
+  applications detected during the scan.
+
+Vulnerability Detection Result:
+10.0.4.82|cpe:/a:openbsd:openssh:6.7
+10.0.4.82|cpe:/o:microsoft:windows_8.1
+
+Log Method:
+Details:
+CPE Inventory
+(OID: 1.3.6.1.4.1.25623.1.0.810002)
+Version used: $Revision: 14324 $
+
+References:
+Other:
+    http://cpe.mitre.org/
+
+
+Issue
+-----
+NVT:    DCE/RPC and MSRPC Services Enumeration
+OID:    1.3.6.1.4.1.25623.1.0.108044
+Threat: Log (CVSS: 0.0)
+Port:   135/tcp
+
+Summary:
+Distributed Computing Environment / Remote Procedure Calls (DCE/RPC) or MSRPC se!
+rvices running
+  on the remote host can be enumerated by connecting on port 135 and doing the a!
+ppropriate queries.
+  The actual reporting takes place in the NVT 'DCE/RPC and MSRPC Services Enumer!
+ation Reporting'
+  (OID: 1.3.6.1.4.1.25623.1.0.10736)
+
+Vulnerability Detection Result:
+A DCE endpoint resolution service seems to be running on this port.
+
+Impact:
+An attacker may use this fact to gain more knowledge
+  about the remote host.
+
+Solution:
+Solution type: Mitigation
+Filter incoming traffic to this port.
+
+Log Method:
+Details:
+DCE/RPC and MSRPC Services Enumeration
+(OID: 1.3.6.1.4.1.25623.1.0.108044)
+Version used: $Revision: 11885 $
+
+
+Issue
+-----
+NVT:    DCE/RPC and MSRPC Services Enumeration Reporting
+OID:    1.3.6.1.4.1.25623.1.0.10736
+Threat: Medium (CVSS: 5.0)
+Port:   135/tcp
+
+Summary:
+Distributed Computing Environment / Remote Procedure Calls (DCE/RPC) or MSRPC se!
+rvices running
+  on the remote host can be enumerated by connecting on port 135 and doing the a!
+ppropriate queries.
+
+Vulnerability Detection Result:
+Here is the list of DCE/RPC or MSRPC services running on this host via the TCP p!
+rotocol:
+Port: 49152/tcp
+     UUID: d95afe70-a6d5-4259-822e-2c84da1ddb0d, version 1
+     Endpoint: ncacn_ip_tcp:10.0.4.82[49152]
+Port: 49153/tcp
+     UUID: 06bba54a-be05-49f9-b0a0-30f790261023, version 1
+     Endpoint: ncacn_ip_tcp:10.0.4.82[49153]
+     Annotation: Security Center
+     UUID: 30adc50c-5cbc-46ce-9a0e-91914789e23c, version 1
+     Endpoint: ncacn_ip_tcp:10.0.4.82[49153]
+     Annotation: NRP server endpoint
+     UUID: 3c4728c5-f0ab-448b-bda1-6ce01eb0a6d5, version 1
+     Endpoint: ncacn_ip_tcp:10.0.4.82[49153]
+     Annotation: DHCP Client LRPC Endpoint
+     UUID: 3c4728c5-f0ab-448b-bda1-6ce01eb0a6d6, version 1
+     Endpoint: ncacn_ip_tcp:10.0.4.82[49153]
+     Annotation: DHCPv6 Client LRPC Endpoint
+     UUID: abfb6ca3-0c5e-4734-9285-0aee72fe8d1c, version 1
+     Endpoint: ncacn_ip_tcp:10.0.4.82[49153]
+     Annotation: Wcm Service
+     UUID: f6beaff7-1e19-4fbb-9f8f-b89e2018337c, version 1
+     Endpoint: ncacn_ip_tcp:10.0.4.82[49153]
+     Annotation: Event log TCPIP
+Port: 49154/tcp
+     UUID: 1a0d010f-1c33-432c-b0f5-8cf4e8053099, version 1
+     Endpoint: ncacn_ip_tcp:10.0.4.82[49154]
+     Annotation: IdSegSrv service
+     UUID: 201ef99a-7fa0-444c-9399-19ba84f12a1a, version 1
+     Endpoint: ncacn_ip_tcp:10.0.4.82[49154]
+     Annotation: AppInfo
+     UUID: 2e6035b2-e8f1-41a7-a044-656b439c4c34, version 1
+     Endpoint: ncacn_ip_tcp:10.0.4.82[49154]
+     Annotation: Proxy Manager provider server endpoint
+     UUID: 3a9ef155-691d-4449-8d05-09ad57031823, version 1
+     Endpoint: ncacn_ip_tcp:10.0.4.82[49154]
+     UUID: 552d076a-cb29-4e44-8b6a-d15e59e2c0af, version 1
+     Endpoint: ncacn_ip_tcp:10.0.4.82[49154]
+     Annotation: IP Transition Configuration endpoint
+     UUID: 58e604e8-9adb-4d2e-a464-3b0683fb1480, version 1
+     Endpoint: ncacn_ip_tcp:10.0.4.82[49154]
+     Annotation: AppInfo
+     UUID: 5f54ce7d-5b79-4175-8584-cb65313a0e98, version 1
+     Endpoint: ncacn_ip_tcp:10.0.4.82[49154]
+     Annotation: AppInfo
+     UUID: 86d35949-83c9-4044-b424-db363231fd0c, version 1
+     Endpoint: ncacn_ip_tcp:10.0.4.82[49154]
+     UUID: 98716d03-89ac-44c7-bb8c-285824e51c4a, version 1
+     Endpoint: ncacn_ip_tcp:10.0.4.82[49154]
+     Annotation: XactSrv service
+     UUID: a398e520-d59a-4bdd-aa7a-3c1e0303a511, version 1
+     Endpoint: ncacn_ip_tcp:10.0.4.82[49154]
+     Annotation: IKE/Authip API
+     UUID: c36be077-e14b-4fe9-8abc-e856ef4f048b, version 1
+     Endpoint: ncacn_ip_tcp:10.0.4.82[49154]
+     Annotation: Proxy Manager client server endpoint
+     UUID: c49a5a70-8a7f-4e70-ba16-1e8f1f193ef1, version 1
+     Endpoint: ncacn_ip_tcp:10.0.4.82[49154]
+     Annotation: Adh APIs
+     UUID: fd7a0523-dc70-43dd-9b2e-9c5ed48225b1, version 1
+     Endpoint: ncacn_ip_tcp:10.0.4.82[49154]
+     Annotation: AppInfo
+Port: 49155/tcp
+     UUID: 0b6edbfa-4a24-4fc6-8a23-942b1eca65d1, version 1
+     Endpoint: ncacn_ip_tcp:10.0.4.82[49155]
+     UUID: 12345678-1234-abcd-ef00-0123456789ab, version 1
+     Endpoint: ncacn_ip_tcp:10.0.4.82[49155]
+     Named pipe : spoolss
+     Win32 service or process : spoolsv.exe
+     Description : Spooler service
+     UUID: 4a452661-8290-4b36-8fbe-7f4093a94978, version 1
+     Endpoint: ncacn_ip_tcp:10.0.4.82[49155]
+     UUID: 76f03f96-cdfd-44fc-a22c-64950a001209, version 1
+     Endpoint: ncacn_ip_tcp:10.0.4.82[49155]
+     UUID: ae33069b-a2a8-46ee-a235-ddfd339be281, version 1
+     Endpoint: ncacn_ip_tcp:10.0.4.82[49155]
+Port: 49157/tcp
+     UUID: 12345778-1234-abcd-ef00-0123456789ac, version 1
+     Endpoint: ncacn_ip_tcp:10.0.4.82[49157]
+     Named pipe : lsass
+     Win32 service or process : lsass.exe
+     Description : SAM access
+Port: 49158/tcp
+     UUID: 367abb81-9844-35f1-ad32-98f038001003, version 2
+     Endpoint: ncacn_ip_tcp:10.0.4.82[49158]
+Port: 49243/tcp
+     UUID: 6b5bdd1e-528c-422c-af8c-a4079be4fe48, version 1
+     Endpoint: ncacn_ip_tcp:10.0.4.82[49243]
+     Annotation: Remote Fw APIs
+Note: DCE/RPC or MSRPC services running on this host locally were identified. Re!
+porting this list is not enabled by default due to the possible large size of th!
+is list. See the script preferences to enable this reporting.
+
+Impact:
+An attacker may use this fact to gain more knowledge
+  about the remote host.
+
+Solution:
+Solution type: Mitigation
+Filter incoming traffic to this ports.
+
+Vulnerability Detection Method:
+Details:
+DCE/RPC and MSRPC Services Enumeration Reporting
+(OID: 1.3.6.1.4.1.25623.1.0.10736)
+Version used: $Revision: 6319 $
+
+
+Issue
+-----
+NVT:    ICMP Timestamp Detection
+OID:    1.3.6.1.4.1.25623.1.0.103190
+Threat: Log (CVSS: 0.0)
+Port:   general/icmp
+
+Summary:
+The remote host responded to an ICMP timestamp request.
+  The Timestamp Reply is an ICMP message which replies to a Timestamp message. I!
+t consists
+  of the originating timestamp sent by the sender of the Timestamp as well as a !
+receive
+  timestamp and a transmit timestamp. This information could theoretically be us!
+ed to
+  exploit weak time-based random number generators in other services.
+
+Vulnerability Detection Result:
+Vulnerability was detected according to the Vulnerability Detection Method.
+
+Log Method:
+Details:
+ICMP Timestamp Detection
+(OID: 1.3.6.1.4.1.25623.1.0.103190)
+Version used: $Revision: 10411 $
+
+References:
+CVE: CVE-1999-0524
+CERT: CB-K15/1514
+, CB-K14/0632
+, DFN-CERT-2014-0658
+
+Other:
+    http://www.ietf.org/rfc/rfc0792.txt
+
+
+Issue
+-----
+NVT:    OpenSSH 'auth2-gss.c' User Enumeration Vulnerability (Windows)
+OID:    1.3.6.1.4.1.25623.1.0.813887
+Threat: Medium (CVSS: 5.0)
+Port:   22/tcp
+
+Product detection result: cpe:/a:openbsd:openssh:6.7
+Detected by: SSH Server type and version (OID: 1.3.6.1.4.1.25623.1.0.10267)
+
+Summary:
+This host is installed with openssh and
+  is prone to user enumeration vulnerability.
+
+Vulnerability Detection Result:
+Installed version: 6.7
+Fixed version:     NoneAvailable
+Installation
+path / port:       22/tcp
+
+Impact:
+Successfully exploitation will allow remote
+  attacker to harvest valid user accounts, which may aid in brute-force attacks.
+
+Solution:
+Solution type: NoneAvailable
+No known solution is available as of 04th March, 2019.
+  Information regarding this issue will be updated once solution details are ava!
+ilable.
+
+Affected Software/OS:
+OpenSSH version 5.9 to 7.8 on Windows.
+
+Vulnerability Insight:
+The flaw exists in the 'auth-gss2.c' source
+  code file of the affected software and is due to insufficient validation of
+  an authentication request packet when the Guide Star Server II (GSS2) componen!
+t
+  is used on an affected system.
+
+Vulnerability Detection Method:
+Checks if a vulnerable version is present
+  on the target host.
+Details:
+OpenSSH 'auth2-gss.c' User Enumeration Vulnerability (Windows)
+(OID: 1.3.6.1.4.1.25623.1.0.813887)
+Version used: $Revision: 13972 $
+
+Product Detection Result:
+Product:cpe:/a:openbsd:openssh:6.7
+
+Method:SSH Server type and version
+(OID: 1.3.6.1.4.1.25623.1.0.10267)
+
+References:
+CVE: CVE-2018-15919
+CERT: CB-K18/0885
+, DFN-CERT-2018-2293
+, DFN-CERT-2018-2191
+
+Other:
+    http://www.openssh.com
+    https://bugzilla.novell.com/show_bug.cgi?id=1106163
+    https://seclists.org/oss-sec/2018/q3/180
+
+
+Issue
+-----
+NVT:    OpenSSH 'sftp-server' Security Bypass Vulnerability (Windows)
+OID:    1.3.6.1.4.1.25623.1.0.812050
+Threat: Medium (CVSS: 5.0)
+Port:   22/tcp
+
+Product detection result: cpe:/a:openbsd:openssh:6.7
+Detected by: SSH Server type and version (OID: 1.3.6.1.4.1.25623.1.0.10267)
+
+Summary:
+This host is installed with openssh and
+  is prone to security bypass vulnerability.
+
+Vulnerability Detection Result:
+Installed version: 6.7
+Fixed version:     7.6
+
+Impact:
+Successfully exploiting this issue allows
+  local users to bypass certain security restrictions and perform unauthorized
+  actions. This may lead to further attacks.
+
+Solution:
+Solution type: VendorFix
+Upgrade to OpenSSH version 7.6 or later.
+
+Affected Software/OS:
+OpenSSH versions before 7.6 on Windows
+
+Vulnerability Insight:
+The flaw exists in the 'process_open' function
+  in sftp-server.c script which does not properly prevent write operations in
+  readonly mode.
+
+Vulnerability Detection Method:
+Checks if a vulnerable version is present on the target host.
+Details:
+OpenSSH 'sftp-server' Security Bypass Vulnerability (Windows)
+(OID: 1.3.6.1.4.1.25623.1.0.812050)
+Version used: $Revision: 11983 $
+
+Product Detection Result:
+Product:cpe:/a:openbsd:openssh:6.7
+
+Method:SSH Server type and version
+(OID: 1.3.6.1.4.1.25623.1.0.10267)
+
+References:
+CVE: CVE-2017-15906
+BID: 101552
+CERT: CB-K18/0137
+, CB-K17/2126
+, CB-K17/2014
+, CB-K17/2002
+, DFN-CERT-2019-0362
+, DFN-CERT-2018-2554
+, DFN-CERT-2018-2191
+, DFN-CERT-2018-2068
+, DFN-CERT-2018-1828
+, DFN-CERT-2018-1568
+, DFN-CERT-2018-0150
+, DFN-CERT-2017-2217
+, DFN-CERT-2017-2100
+, DFN-CERT-2017-2093
+
+Other:
+    https://www.openssh.com/txt/release-7.6
+    https://github.com/openbsd/src/commit/a6981567e8e
+    http://www.openssh.com
+
+
+Issue
+-----
+NVT:    OpenSSH Denial of Service And User Enumeration Vulnerabilities (Windows)
+OID:    1.3.6.1.4.1.25623.1.0.809121
+Threat: High (CVSS: 7.8)
+Port:   22/tcp
+
+Product detection result: cpe:/a:openbsd:openssh:6.7
+Detected by: SSH Server type and version (OID: 1.3.6.1.4.1.25623.1.0.10267)
+
+Summary:
+This host is installed with openssh and
+  is prone to denial of service and user enumeration vulnerabilities.
+
+Vulnerability Detection Result:
+Installed version: 6.7
+Fixed version:     7.3
+
+Impact:
+Successfully exploiting this issue allows
+  remote attackers to cause a denial of service (crypt CPU consumption) and
+  to enumerate users by leveraging the timing difference between responses
+  when a large password is provided.
+
+Solution:
+Solution type: VendorFix
+Upgrade to OpenSSH version 7.3 or later.
+
+Affected Software/OS:
+OpenSSH versions before 7.3 on Windows
+
+Vulnerability Insight:
+Multiple flaws exist due to,
+  - The auth_password function in 'auth-passwd.c' script does not limit password
+    lengths for password authentication.
+  - The sshd in OpenSSH, when SHA256 or SHA512 are used for user password hashin!
+g
+    uses BLOWFISH hashing on a static password when the username does not exist
+    and it takes much longer to calculate SHA256/SHA512 hash than BLOWFISH hash.
+
+Vulnerability Detection Method:
+Checks if a vulnerable version is present on the target host.
+Details:
+OpenSSH Denial of Service And User Enumeration Vulnerabilities (Windows)
+(OID: 1.3.6.1.4.1.25623.1.0.809121)
+Version used: $Revision: 11969 $
+
+Product Detection Result:
+Product:cpe:/a:openbsd:openssh:6.7
+
+Method:SSH Server type and version
+(OID: 1.3.6.1.4.1.25623.1.0.10267)
+
+References:
+CVE: CVE-2016-6515, CVE-2016-6210
+BID: 92212
+CERT: CB-K18/0041
+, CB-K17/2219
+, CB-K17/2112
+, CB-K17/1753
+, CB-K17/1349
+, CB-K17/1292
+, CB-K17/0055
+, CB-K16/1837
+, CB-K16/1629
+, CB-K16/1487
+, CB-K16/1485
+, CB-K16/1252
+, CB-K16/1221
+, CB-K16/1082
+, DFN-CERT-2018-1828
+, DFN-CERT-2018-1070
+, DFN-CERT-2018-0046
+, DFN-CERT-2017-2320
+, DFN-CERT-2017-2208
+, DFN-CERT-2017-1831
+, DFN-CERT-2017-1407
+, DFN-CERT-2017-1340
+, DFN-CERT-2017-0060
+, DFN-CERT-2016-1943
+, DFN-CERT-2016-1729
+, DFN-CERT-2016-1576
+, DFN-CERT-2016-1574
+, DFN-CERT-2016-1331
+, DFN-CERT-2016-1243
+, DFN-CERT-2016-1149
+
+Other:
+    http://www.openssh.com/txt/release-7.3
+    http://seclists.org/fulldisclosure/2016/Jul/51
+    https://security-tracker.debian.org/tracker/CVE-2016-6210
+    http://openwall.com/lists/oss-security/2016/08/01/2
+
+
+Issue
+-----
+NVT:    OpenSSH Multiple Vulnerabilities Jan17 (Windows)
+OID:    1.3.6.1.4.1.25623.1.0.810325
+Threat: High (CVSS: 7.5)
+Port:   22/tcp
+
+Product detection result: cpe:/a:openbsd:openssh:6.7
+Detected by: SSH Server type and version (OID: 1.3.6.1.4.1.25623.1.0.10267)
+
+Summary:
+This host is installed with openssh and
+  is prone to multiple vulnerabilities.
+
+Vulnerability Detection Result:
+Installed version: 6.7
+Fixed version:     7.4
+
+Impact:
+Successfully exploiting this issue allows
+  local users to obtain sensitive private-key information, to gain privileges,
+  conduct a senial-of-service condition and allows remote attackers to execute
+  arbitrary local PKCS#11 modules.
+
+Solution:
+Solution type: VendorFix
+Upgrade to OpenSSH version 7.4 or later.
+
+Affected Software/OS:
+OpenSSH versions before 7.4 on Windows.
+
+Vulnerability Insight:
+Multiple flaws exists due to,
+  - An 'authfile.c' script does not properly consider the effects of realloc
+    on buffer contents.
+  - The shared memory manager (associated with pre-authentication compression)
+    does not ensure that a bounds check is enforced by all compilers.
+  - The sshd in OpenSSH creates forwarded Unix-domain sockets as root, when
+    privilege separation is not used.
+  - An untrusted search path vulnerability in ssh-agent.c in ssh-agent.
+  - NULL pointer dereference error due to an out-of-sequence NEWKEYS message.
+
+Vulnerability Detection Method:
+Checks if a vulnerable version is present on the target host.
+Details:
+OpenSSH Multiple Vulnerabilities Jan17 (Windows)
+(OID: 1.3.6.1.4.1.25623.1.0.810325)
+Version used: $Revision: 12467 $
+
+Product Detection Result:
+Product:cpe:/a:openbsd:openssh:6.7
+
+Method:SSH Server type and version
+(OID: 1.3.6.1.4.1.25623.1.0.10267)
+
+References:
+CVE: CVE-2016-10009, CVE-2016-10010, CVE-2016-10011, CVE-2016-10012, CVE-2016-10708
+BID: 94968,  94972,  94977,  94975
+CERT: CB-K18/0919
+, CB-K18/0591
+, CB-K18/0137
+, CB-K18/0041
+, CB-K17/2219
+, CB-K17/2112
+, CB-K17/1292
+, CB-K17/1061
+, CB-K17/0527
+, CB-K17/0377
+, CB-K17/0127
+, CB-K17/0041
+, CB-K16/1991
+, DFN-CERT-2018-2259
+, DFN-CERT-2018-2191
+, DFN-CERT-2018-2068
+, DFN-CERT-2018-1828
+, DFN-CERT-2018-1568
+, DFN-CERT-2018-1432
+, DFN-CERT-2018-1112
+, DFN-CERT-2018-1070
+, DFN-CERT-2018-1068
+, DFN-CERT-2018-0150
+, DFN-CERT-2018-0046
+, DFN-CERT-2017-2320
+, DFN-CERT-2017-2208
+, DFN-CERT-2017-1340
+, DFN-CERT-2017-1096
+, DFN-CERT-2017-0532
+, DFN-CERT-2017-0386
+, DFN-CERT-2017-0130
+, DFN-CERT-2017-0042
+, DFN-CERT-2016-2099
+
+Other:
+    http://www.openssh.com
+    https://www.openssh.com/txt/release-7.4
+    http://www.openwall.com/lists/oss-security/2016/12/19/2
+    http://blog.swiecki.net/2018/01/fuzzing-tcp-servers.html
+    https://anongit.mindrot.org/openssh.git/commit/?id=28652bca29046f62c7045e933e6b931de1d16737
+
+
+Issue
+-----
+NVT:    OpenSSH User Enumeration Vulnerability-Aug18 (Windows)
+OID:    1.3.6.1.4.1.25623.1.0.813863
+Threat: Medium (CVSS: 5.0)
+Port:   22/tcp
+
+Product detection result: cpe:/a:openbsd:openssh:6.7
+Detected by: SSH Server type and version (OID: 1.3.6.1.4.1.25623.1.0.10267)
+
+Summary:
+This host is installed with openssh and
+  is prone to user enumeration vulnerability.
+
+Vulnerability Detection Result:
+Installed version: 6.7
+Fixed version:     7.8
+Installation
+path / port:       22/tcp
+
+Impact:
+Successfully exploitation will allow remote
+  attacker to test whether a certain user exists or not (username enumeration)
+  on a target OpenSSH server.
+
+Solution:
+Solution type: VendorFix
+Update to version 7.8 or later.
+
+Affected Software/OS:
+OpenSSH version 7.7 and prior on Windows.
+
+Vulnerability Insight:
+The flaw is due to not delaying bailout for
+  an invalid authenticating user until after the packet containing the request
+  has been fully parsed, related to auth2-gss.c, auth2-hostbased.c, and
+  auth2-pubkey.c
+
+Vulnerability Detection Method:
+Checks if a vulnerable version is present
+  on the target host.
+Details:
+OpenSSH User Enumeration Vulnerability-Aug18 (Windows)
+(OID: 1.3.6.1.4.1.25623.1.0.813863)
+Version used: $Revision: 12956 $
+
+Product Detection Result:
+Product:cpe:/a:openbsd:openssh:6.7
+
+Method:SSH Server type and version
+(OID: 1.3.6.1.4.1.25623.1.0.10267)
+
+References:
+CVE: CVE-2018-15473
+CERT: CB-K18/1031
+, CB-K18/0873
+, DFN-CERT-2019-0362
+, DFN-CERT-2018-2293
+, DFN-CERT-2018-2259
+, DFN-CERT-2018-2191
+, DFN-CERT-2018-1806
+, DFN-CERT-2018-1696
+
+Other:
+    http://www.openssh.com
+    https://0day.city/cve-2018-15473.html
+    https://github.com/openbsd/src/commit/779974d35b4859c07bc3cb8a12c74b43b0a7d1e0
+
+
+Issue
+-----
+NVT:    OpenSSH X11 Forwarding Security Bypass Vulnerability (Windows)
+OID:    1.3.6.1.4.1.25623.1.0.810768
+Threat: High (CVSS: 7.5)
+Port:   22/tcp
+
+Product detection result: cpe:/a:openbsd:openssh:6.7
+Detected by: SSH Server type and version (OID: 1.3.6.1.4.1.25623.1.0.10267)
+
+Summary:
+This host is installed with openssh and
+  is prone to security bypass vulnerability.
+
+Vulnerability Detection Result:
+Installed version: 6.7
+Fixed version:     7.2
+
+Impact:
+Successfully exploiting this issue allows
+  local users to bypass certain security restrictions and perform unauthorized
+  actions. This may lead to further attacks.
+
+Solution:
+Solution type: VendorFix
+Upgrade to OpenSSH version 7.2 or later.
+
+Affected Software/OS:
+OpenSSH versions before 7.2 on Windows
+
+Vulnerability Insight:
+An access flaw was discovered in OpenSSH,
+  It did not correctly handle failures to generate authentication cookies for
+  untrusted X11 forwarding. A malicious or compromised remote X application
+  could possibly use this flaw to establish a trusted connection to the
+  local X server, even if only untrusted X11 forwarding was requested.
+
+Vulnerability Detection Method:
+Checks if a vulnerable version is present on the target host.
+Details:
+OpenSSH X11 Forwarding Security Bypass Vulnerability (Windows)
+(OID: 1.3.6.1.4.1.25623.1.0.810768)
+Version used: $Revision: 11919 $
+
+Product Detection Result:
+Product:cpe:/a:openbsd:openssh:6.7
+
+Method:SSH Server type and version
+(OID: 1.3.6.1.4.1.25623.1.0.10267)
+
+References:
+CVE: CVE-2016-1908
+BID: 84427
+CERT: CB-K16/1485
+, CB-K16/0694
+, CB-K16/0684
+, CB-K16/0449
+, CB-K16/0162
+, DFN-CERT-2018-1828
+, DFN-CERT-2016-1574
+, DFN-CERT-2016-0754
+, DFN-CERT-2016-0733
+, DFN-CERT-2016-0488
+, DFN-CERT-2016-0182
+
+Other:
+    http://openwall.com/lists/oss-security/2016/01/15/13
+    https://bugzilla.redhat.com/show_bug.cgi?id=1298741#c4
+    http://www.openssh.com/txt/release-7.2
+    https://anongit.mindrot.org/openssh.git/commit/?id=ed4ce82dbfa8a3a3c8ea6fa0db113c71e234416c
+    https://bugzilla.redhat.com/show_bug.cgi?id=1298741
+
+
+Issue
+-----
+NVT:    OS Detection Consolidation and Reporting
+OID:    1.3.6.1.4.1.25623.1.0.105937
+Threat: Log (CVSS: 0.0)
+Port:   general/tcp
+
+Summary:
+This script consolidates the OS information detected by several NVTs and tries t!
+o find the best matching OS.
+  Furthermore it reports all previously collected information leading to this be!
+st matching OS. It also reports possible additional information
+  which might help to improve the OS detection.
+  If any of this information is wrong or could be improved please consider to re!
+port these to the referenced community portal.
+
+Vulnerability Detection Result:
+Best matching OS:
+OS: Windows 8.1 Enterprise Evaluation 9600
+CPE: cpe:/o:microsoft:windows_8.1
+Found by NVT: 1.3.6.1.4.1.25623.1.0.102011 (SMB NativeLanMan)
+Concluded from SMB/Samba banner on port 445/tcp: OS String: Windows 8.1 Enterpri!
+se Evaluation 9600; SMB String: Windows 8.1 Enterprise Evaluation 6.3
+Setting key "Host/runs_windows" based on this information
+Other OS detections (in order of reliability):
+OS: Microsoft Windows
+CPE: cpe:/o:microsoft:windows
+Found by NVT: 1.3.6.1.4.1.25623.1.0.108044 (DCE/RPC and MSRPC Services Enumerati!
+on)
+Concluded from DCE/RPC and MSRPC Services Enumeration on port 135/tcp
+
+Log Method:
+Details:
+OS Detection Consolidation and Reporting
+(OID: 1.3.6.1.4.1.25623.1.0.105937)
+Version used: $Revision: 14244 $
+
+References:
+Other:
+    https://community.greenbone.net/c/vulnerability-tests
+
+
+Issue
+-----
+NVT:    Services
+OID:    1.3.6.1.4.1.25623.1.0.10330
+Threat: Log (CVSS: 0.0)
+Port:   22/tcp
+
+Summary:
+This routine attempts to guess which service is running on the
+  remote ports. For instance, it searches for a web server which could listen on!
+ another port than
+  80 or 443 and makes this information available for other check routines.
+
+Vulnerability Detection Result:
+An ssh server is running on this port
+
+Log Method:
+Details:
+Services
+(OID: 1.3.6.1.4.1.25623.1.0.10330)
+Version used: $Revision: 13541 $
+
+
+Issue
+-----
+NVT:    SMB NativeLanMan
+OID:    1.3.6.1.4.1.25623.1.0.102011
+Threat: Log (CVSS: 0.0)
+Port:   445/tcp
+
+Summary:
+It is possible to extract OS, domain and SMB server information
+  from the Session Setup AndX Response packet which is generated during NTLM aut!
+hentication.
+
+Vulnerability Detection Result:
+Detected SMB workgroup: WORKGROUP
+Detected SMB server: Windows 8.1 Enterprise Evaluation 6.3
+Detected OS: Windows 8.1 Enterprise Evaluation 9600
+
+Log Method:
+Details:
+SMB NativeLanMan
+(OID: 1.3.6.1.4.1.25623.1.0.102011)
+Version used: $Revision: 13813 $
+
+
+Issue
+-----
+NVT:    SMB Remote Version Detection
+OID:    1.3.6.1.4.1.25623.1.0.807830
+Threat: Log (CVSS: 0.0)
+Port:   445/tcp
+
+Summary:
+Detection of Server Message Block(SMB).
+  This script sends SMB Negotiation request and try to get the version from the
+  response.
+
+Vulnerability Detection Result:
+SMBv1, SMBv2 and SMBv3 are enabled on remote target
+
+Log Method:
+Details:
+SMB Remote Version Detection
+(OID: 1.3.6.1.4.1.25623.1.0.807830)
+Version used: $Revision: 10898 $
+
+
+Issue
+-----
+NVT:    SMB Test with 'smbclient'
+OID:    1.3.6.1.4.1.25623.1.0.90011
+Threat: Log (CVSS: 0.0)
+Port:   general/SMBClient
+
+Summary:
+This script reports information about the SMB server of the remote host
+  collected with the 'smbclient' tool.
+
+Vulnerability Detection Result:
+Error getting SMB-Data -> SESSION SETUP FAILED: NT_STATUS_ACCESS_DENIED
+
+Log Method:
+Details:
+SMB Test with 'smbclient'
+(OID: 1.3.6.1.4.1.25623.1.0.90011)
+Version used: $Revision: 13274 $
+
+
+Issue
+-----
+NVT:    SMB/CIFS Server Detection
+OID:    1.3.6.1.4.1.25623.1.0.11011
+Threat: Log (CVSS: 0.0)
+Port:   445/tcp
+
+Summary:
+This script detects whether port 445 and 139 are open and
+  if they are running a CIFS/SMB server.
+
+Vulnerability Detection Result:
+A CIFS server is running on this port
+
+Log Method:
+Details:
+SMB/CIFS Server Detection
+(OID: 1.3.6.1.4.1.25623.1.0.11011)
+Version used: $Revision: 13541 $
+
+
+Issue
+-----
+NVT:    SMB/CIFS Server Detection
+OID:    1.3.6.1.4.1.25623.1.0.11011
+Threat: Log (CVSS: 0.0)
+Port:   139/tcp
+
+Summary:
+This script detects whether port 445 and 139 are open and
+  if they are running a CIFS/SMB server.
+
+Vulnerability Detection Result:
+A SMB server is running on this port
+
+Log Method:
+Details:
+SMB/CIFS Server Detection
+(OID: 1.3.6.1.4.1.25623.1.0.11011)
+Version used: $Revision: 13541 $
+
+
+Issue
+-----
+NVT:    SSH Protocol Algorithms Supported
+OID:    1.3.6.1.4.1.25623.1.0.105565
+Threat: Log (CVSS: 0.0)
+Port:   22/tcp
+
+Summary:
+This script detects which algorithms and languages are supported by the remote S!
+SH Service
+
+Vulnerability Detection Result:
+The following options are supported by the remote ssh service:
+kex_algorithms:
+curve25519-sha256@libssh.org,ecdh-sha2-nistp256,ecdh-sha2-nistp384,ecdh-sha2-nis!
+tp521,diffie-hellman-group-exchange-sha256,diffie-hellman-group14-sha1
+server_host_key_algorithms:
+ssh-rsa,ssh-dss,ecdsa-sha2-nistp521
+encryption_algorithms_client_to_server:
+aes128-ctr,aes192-ctr,aes256-ctr,aes128-gcm@openssh.com,aes256-gcm@openssh.com,c!
+hacha20-poly1305@openssh.com
+encryption_algorithms_server_to_client:
+aes128-ctr,aes192-ctr,aes256-ctr,aes128-gcm@openssh.com,aes256-gcm@openssh.com,c!
+hacha20-poly1305@openssh.com
+mac_algorithms_client_to_server:
+umac-64-etm@openssh.com,umac-128-etm@openssh.com,hmac-sha2-256-etm@openssh.com,h!
+mac-sha2-512-etm@openssh.com,hmac-sha1-etm@openssh.com,umac-64@openssh.com,umac-!
+128@openssh.com,hmac-sha2-256,hmac-sha2-512,hmac-sha1
+mac_algorithms_server_to_client:
+umac-64-etm@openssh.com,umac-128-etm@openssh.com,hmac-sha2-256-etm@openssh.com,h!
+mac-sha2-512-etm@openssh.com,hmac-sha1-etm@openssh.com,umac-64@openssh.com,umac-!
+128@openssh.com,hmac-sha2-256,hmac-sha2-512,hmac-sha1
+compression_algorithms_client_to_server:
+none,zlib@openssh.com
+compression_algorithms_server_to_client:
+none,zlib@openssh.com
+
+Log Method:
+Details:
+SSH Protocol Algorithms Supported
+(OID: 1.3.6.1.4.1.25623.1.0.105565)
+Version used: $Revision: 13581 $
+
+
+Issue
+-----
+NVT:    SSH Protocol Versions Supported
+OID:    1.3.6.1.4.1.25623.1.0.100259
+Threat: Log (CVSS: 0.0)
+Port:   22/tcp
+
+Summary:
+Identification of SSH protocol versions supported by the remote
+  SSH Server. Also reads the corresponding fingerprints from the service.
+  The following versions are tried: 1.33, 1.5, 1.99 and 2.0
+
+Vulnerability Detection Result:
+The remote SSH Server supports the following SSH Protocol Versions:
+1.99
+2.0
+SSHv2 Fingerprint(s):
+ecdsa-sha2-nistp521: da:33:2e:23:74:94:cf:ed:34:18:e4:1b:05:df:0a:33
+ssh-dss: 83:94:7d:b9:cc:3b:bc:67:53:18:15:5d:9a:e9:65:78
+ssh-rsa: 84:bc:24:20:b5:52:3c:8c:53:b4:3b:ed:89:68:a7:da
+
+Log Method:
+Details:
+SSH Protocol Versions Supported
+(OID: 1.3.6.1.4.1.25623.1.0.100259)
+Version used: $Revision: 13594 $
+
+
+Issue
+-----
+NVT:    SSH Server type and version
+OID:    1.3.6.1.4.1.25623.1.0.10267
+Threat: Log (CVSS: 0.0)
+Port:   22/tcp
+
+Summary:
+This detects the SSH Server's type and version by connecting to the server
+  and processing the buffer received.
+  This information gives potential attackers additional information about the sy!
+stem they are attacking.
+  Versions and Types should be omitted where possible.
+
+Vulnerability Detection Result:
+Remote SSH server banner: SSH-2.0-OpenSSH_6.7
+Remote SSH supported authentication: password,publickey,keyboard-interactive
+Remote SSH text/login banner: (not available)
+This is probably:
+- OpenSSH
+CPE: cpe:/a:openbsd:openssh:6.7
+Concluded from remote connection attempt with credentials:
+Login:    OpenVAS-VT
+Password: OpenVAS-VT
+
+Log Method:
+Details:
+SSH Server type and version
+(OID: 1.3.6.1.4.1.25623.1.0.10267)
+Version used: 2019-03-22T07:02:59+0000
+
+
+Issue
+-----
+NVT:    TCP timestamps
+OID:    1.3.6.1.4.1.25623.1.0.80091
+Threat: Low (CVSS: 2.6)
+Port:   general/tcp
+
+Summary:
+The remote host implements TCP timestamps and therefore allows to compute
+  the uptime.
+
+Vulnerability Detection Result:
+It was detected that the host implements RFC1323.
+The following timestamps were retrieved with a delay of 1 seconds in-between:
+Packet 1: 118028
+Packet 2: 118143
+
+Impact:
+A side effect of this feature is that the uptime of the remote
+  host can sometimes be computed.
+
+Solution:
+Solution type: Mitigation
+To disable TCP timestamps on linux add the line 'net.ipv4.tcp_timestamps = 0' to
+  /etc/sysctl.conf. Execute 'sysctl -p' to apply the settings at runtime.
+  To disable TCP timestamps on Windows execute 'netsh int tcp set global timesta!
+mps=disabled'
+  Starting with Windows Server 2008 and Vista, the timestamp can not be complete!
+ly disabled.
+  The default behavior of the TCP/IP stack on this Systems is to not use the
+  Timestamp options when initiating TCP connections, but use them if the TCP pee!
+r
+  that is initiating communication includes them in their synchronize (SYN) segm!
+ent.
+  See the references for more information.
+
+Affected Software/OS:
+TCP/IPv4 implementations that implement RFC1323.
+
+Vulnerability Insight:
+The remote host implements TCP timestamps, as defined by RFC1323.
+
+Vulnerability Detection Method:
+Special IP packets are forged and sent with a little delay in between to the
+  target IP. The responses are searched for a timestamps. If found, the timestam!
+ps are reported.
+Details:
+TCP timestamps
+(OID: 1.3.6.1.4.1.25623.1.0.80091)
+Version used: $Revision: 14310 $
+
+References:
+Other:
+    http://www.ietf.org/rfc/rfc1323.txt
+    http://www.microsoft.com/en-us/download/details.aspx?id=9152
+
+
+Issue
+-----
+NVT:    Traceroute
+OID:    1.3.6.1.4.1.25623.1.0.51662
+Threat: Log (CVSS: 0.0)
+Port:   general/tcp
+
+Summary:
+A traceroute from the scanning server to the target system was
+  conducted. This traceroute is provided primarily for informational value only.!
+ In the vast
+  majority of cases, it does not represent a vulnerability. However, if the disp!
+layed traceroute
+  contains any private addresses that should not have been publicly visible, the!
+n you have an
+  issue you need to correct.
+
+Vulnerability Detection Result:
+Here is the route from 10.0.4.150 to 10.0.4.82:
+10.0.4.150
+10.0.4.82
+
+Solution:
+Block unwanted packets from escaping your network.
+
+Log Method:
+Details:
+Traceroute
+(OID: 1.3.6.1.4.1.25623.1.0.51662)
+Version used: $Revision: 10411 $
+
+

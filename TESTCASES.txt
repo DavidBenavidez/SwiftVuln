@@ -1,0 +1,46 @@
+MY COMPUTER: 10.0.4.150
+C1 10.0.5.200 
+C2 10.0.5.141
+C3 10.0.4.248
+C4 10.0.4.237
+C5 10.0.5.184
+
+
+
+
+
+
+=========================================
+TEST CASE 1 METASPLOITABLE@
+C1 Metasploitable (10.0.4.139)
+C2-C5 Normal
+
+Got 40 VULNS 
+
+
+=========================================
+TEST CASE 2 UBUNTU12 QUANTIFIED SCORE9.648902
+C1 UBUNTU12 (10.0.4.28)
+C2-C5 Normal
+
+
+=========================================
+TEST CASE 3 WINDOWS7 9.818
+C1 Windows8.1 (10.0.5.98)
+C2-C5 Normal
+
+=========================================
+TEST CASE 4 UBUNTU 16
+C1 UBUNTU16 (10.0.5.157) 1.134715
+C2-C5 Normal
+
+=========================================
+TEST CASE 5 WINDOWS8 9.99
+C1 Windows8.1 (10.0.4.82)
+C2-C5 Normal
+
+=========================================
+TEST CASE 7 SUBNET SCAN Normal All (Real-world Data)
+
+=========================================
+TEST CASE 6 SUBNET SCAN with vuln 

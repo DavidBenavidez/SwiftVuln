@@ -1,4 +1,4 @@
-from pages.main import Main
+from pages.dashboard import Dashboard
 from pages.scan import Scan
 from pages.details import Details
 from pages.initScan import InitScan
